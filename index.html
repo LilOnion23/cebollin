@@ -88,13 +88,17 @@
   }
   .close-btn {
     position: absolute;
-    top: -40px;
-    right: 0;
-    background: none;
+    top: 8px;
+    right: 12px;
+    background: rgba(0,0,0,0.5);
     border: none;
     color: white;
-    font-size: 2rem;
+    font-size: 1.5rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     cursor: pointer;
+    z-index: 10;
   }
 </style>
 </head>
@@ -128,16 +132,20 @@
 <div id="game-modal">
   <div class="game-modal-content">
     <button class="close-btn" onclick="closeGame()">✕</button>
-    <iframe id="game-frame" src="" allow="autoplay; fullscreen"></iframe>
+    <iframe id="game-frame" allow="autoplay; fullscreen"></iframe>
   </div>
 </div>
 
 <script>
+let gameLoaded = false;
+
 function openGame() {
   const frame = document.getElementById('game-frame');
   const modal = document.getElementById('game-modal');
-  // Carga el juego solo cuando se abre el modal (evita descargar 316MB de una)
-  if (!frame.src) frame.src = '/game/index.html';
+  if (!gameLoaded) {
+    frame.src = '/game/index.html';
+    gameLoaded = true;
+  }
   modal.classList.add('open');
 }
 
@@ -146,6 +154,7 @@ function closeGame() {
   modal.classList.remove('open');
   // Opcional: descargar el iframe para liberar memoria al cerrar
   // document.getElementById('game-frame').src = '';
+  // gameLoaded = false;
 }
 </script>
 
