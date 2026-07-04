@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cebollin - El Juego</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Outfit', 'Segoe UI', Arial, sans-serif;
+    background: #1a1a1a;
+    color: #f0f0f0;
+  }
+  header {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #2d4a2d, #1a1a1a);
+  }
+  header img.logo {
+    max-width: 480px;
+    width: 80%;
+    height: auto;
+    margin-bottom: 0.5rem;
+  }
+  header p { font-size: 1.2rem; color: #ccc; font-weight: 400; }
+  .play-btn {
+    margin-top: 2rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.3rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    background: #4a7c4a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .play-btn:hover { background: #5c975c; }
+
+  section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+  section h2 {
+    font-weight: 700;
+    border-bottom: 2px solid #4a7c4a;
+    padding-bottom: 0.5rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+  }
+
+  /* Modal */
+  #game-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  #game-modal.open { display: flex; }
+  .game-modal-content {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    max-width: 1280px;
+    max-height: 720px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .game-modal-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .close-btn {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="/assets/logo.png" alt="Cebollin">
+  <p>No pierdas tus hojas...</p>
+  <button class="play-btn" onclick="openGame()">▶ Jugar</button>
+</header>
+
+<section>
+  <h2>Sobre el juego</h2>
+  <p>Aquí va la descripción de Cebollin: de qué trata, mecánicas, historia, etc.</p>
+</section>
+
+<section>
+  <h2>Sobre el desarrollador</h2>
+  <p>Aquí va tu info como desarrollador.</p>
+</section>
+
+<section>
+  <h2>Contacto</h2>
+  <p>Email, redes sociales, etc.</p>
+</section>
+
+<footer>
+  &copy; 2026 Cebollin. Todos los derechos reservados.
+</footer>
+
+<div id="game-modal">
+  <div class="game-modal-content">
+    <button class="close-btn" onclick="closeGame()">✕</button>
+    <iframe id="game-frame" src="" allow="autoplay; fullscreen"></iframe>
+  </div>
+</div>
+
+<script>
+function openGame() {
+  const frame = document.getElementById('game-frame');
+  const modal = document.getElementById('game-modal');
+  // Carga el juego solo cuando se abre el modal (evita descargar 316MB de una)
+  if (!frame.src) frame.src = '/game/index.html';
+  modal.classList.add('open');
+}
+
+function closeGame() {
+  const modal = document.getElementById('game-modal');
+  modal.classList.remove('open');
+  // Opcional: descargar el iframe para liberar memoria al cerrar
+  // document.getElementById('game-frame').src = '';
+}
+</script>
+
+</body>
+</html>
