@@ -10,7 +10,6 @@ html, body, #canvas {
 	padding: 0;
 	border: 0;
 }
-
 body {
 	color: white;
 	background-color: black;
@@ -188,7 +187,7 @@ const engine = new Engine(GODOT_CONFIG);
 					setTimeout(() => resolve(), 2000);
 				}),
 			]).then(() => {
-				// Reload if there was no error.
+				// Reload if there was no error. deploy2
 				window.location.reload();
 			}).catch((err) => {
 				console.error('Error while registering service worker:', err);
