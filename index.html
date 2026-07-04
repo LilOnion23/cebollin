@@ -79,7 +79,7 @@ nav a:hover{opacity:1;}
 .scroll-hint{position:absolute;bottom:2.2rem;font-size:.95rem;opacity:.5;font-weight:500;}
 
 .blob{border-radius:62% 38% 51% 49%/41% 44% 56% 59%;overflow:hidden;background:rgba(0,0,0,.03);}
-.blob img{width:100%;height:100%;object-fit:cover;}
+.blob img{width:100%;height:auto;display:block;}
 .blob.alt{border-radius:38% 62% 63% 37%/45% 41% 59% 55%;}
 
 .eyebrow{font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em;display:inline-block;margin-bottom:.7rem;padding:.3rem .9rem;border-radius:20px;color:var(--cream);}
@@ -128,6 +128,24 @@ nav a:hover{opacity:1;}
 .biome-card.c3{background:var(--khaki);}
 .biome-card.c4{background:var(--clay);}
 .biome-card.c5{background:var(--navy);}
+
+.parallax-forest{
+  height:60vh;min-height:340px;
+  background-image:linear-gradient(180deg,rgba(20,26,18,.35),rgba(20,26,18,.55)),url('/assets/Bosque Secuoyas.jpg');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:0 6vw;
+}
+.parallax-forest p{
+  color:var(--cream);font-size:1.3rem;font-weight:600;max-width:32ch;line-height:1.5;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);margin:0;
+}
+@media(max-width:800px){
+  /* background-attachment:fixed is unreliable on mobile browsers; fall back to a normal scrolling background */
+  .parallax-forest{background-attachment:scroll;}
+}
 
 #enemigos h2{font-size:2.8rem;text-align:center;margin-bottom:.6rem;}
 #enemigos > .sub{text-align:center;max-width:600px;margin:0 auto 3rem;opacity:.8;}
@@ -195,7 +213,7 @@ footer{font-size:.85rem;opacity:.5;}
       <p>Después de este ataque, decide investigar las fuentes del mutágeno que convirtió a estos seres en mutantes.</p>
     </div>
     <div class="blob interactive reveal delay1 historia-img">
-      <img src="/assets/Cebollin Universo(8).png" alt="Universo de Cebollin — bocetos de Padre y Madre Cebollin">
+      <img src="/assets/Cebollin Universo(6).png" alt="Universo de Cebollin — bocetos de Padre y Madre Cebollin">
     </div>
   </div>
 </section>
@@ -203,7 +221,7 @@ footer{font-size:.85rem;opacity:.5;}
 <section id="personajes">
   <div class="char-row">
     <div class="blob interactive char-img reveal">
-      <img src="/assets/Cebollin Universo(10).png" alt="Cebollin protagonista">
+      <img src="/assets/Assets Cebollin(30).png" alt="Cebollin protagonista">
     </div>
     <div class="reveal delay1">
       <span class="eyebrow navy">Protagonista</span>
@@ -215,7 +233,7 @@ footer{font-size:.85rem;opacity:.5;}
 
   <div class="antagonist-row reveal delay1">
     <div class="blob alt interactive tilt-r char-img">
-      <img src="/assets/Cebollin Universo(11).png" alt="Dr. Rabadin antagonista">
+      <img src="/assets/Assets Cebollin(31).png" alt="Dr. Rabadin antagonista">
     </div>
     <span class="eyebrow clay">Antagonista</span>
     <h3 class="char-name">Dr. Rabadin</h3>
@@ -256,6 +274,10 @@ footer{font-size:.85rem;opacity:.5;}
     </div>
   </div>
 </section>
+
+<div class="parallax-forest">
+  <p>Bajo la copa de los árboles mutados, la espora sigue extendiéndose...</p>
+</div>
 
 <section id="enemigos">
   <span class="eyebrow clay" style="display:block;width:fit-content;margin:0 auto .8rem">Criaturas mutadas</span>
