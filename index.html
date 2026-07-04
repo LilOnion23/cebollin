@@ -24,7 +24,6 @@ body{
   margin:0;
   font-family:'Outfit',sans-serif;
   background:
-    linear-gradient(rgba(245,239,221,.91),rgba(245,239,221,.91)),
     url('/assets/Bosque Secuoyas.jpg');
   background-size:cover;
   background-position:top center;
@@ -194,14 +193,14 @@ footer{font-size:.85rem;opacity:.5;}
   background-size:180px 180px;
   opacity:.10;
   mix-blend-mode:overlay;
-  animation:crt-grain .5s steps(1) infinite;
+  animation:crt-grain .4s steps(1) infinite;
 }
 .crt-overlay::after{
   content:"";
   position:absolute;left:0;right:0;height:140px;
   background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,0));
   mix-blend-mode:overlay;
-  animation:crt-roll 9s linear infinite;
+  animation:crt-roll 7s linear infinite;
 }
 @keyframes crt-flicker{
   0%,100%{opacity:1;}
