@@ -153,8 +153,8 @@ function closeGame() {
   const modal = document.getElementById('game-modal');
   modal.classList.remove('open');
   // Opcional: descargar el iframe para liberar memoria al cerrar
-  // document.getElementById('game-frame').src = '';
-  // gameLoaded = false;
+  document.getElementById('game-frame').src = '';
+  gameLoaded = false;
 }
 </script>
 
