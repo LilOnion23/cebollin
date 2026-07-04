@@ -10,221 +10,492 @@
 <style>
 :root{
   --cream:#F5EFDD;
-  --ink:#20261F;
+  --ink:#141A14;
   --navy:#1B3A4B;
   --jungle:#1E7A3C;
   --teal:#0B5A63;
   --khaki:#A9955F;
   --clay:#8A5A3D;
   --onion-red:#A6302E;
+  --glass: rgba(14, 24, 14, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
 }
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
+
 body{
   margin:0;
   font-family:'Outfit',sans-serif;
-  background:
-    url('/assets/Bosque Secuoyas.jpg');
-  background-size:cover;
-  background-position:top center;
-  background-attachment:fixed;
-  background-repeat:no-repeat;
-  color:var(--ink);
+  background:url('/assets/Bosque Secuoyas.jpg');
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  color:var(--cream);
   overflow-x:hidden;
+  position: relative;
 }
-@media(max-width:800px){
-  /* background-attachment:fixed is unreliable on mobile browsers; fall back to a normal scrolling background */
-  body{background-attachment:scroll;}
+
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 20, 10, 0.6) 0%, rgba(10, 15, 10, 0.85) 100%);
+  z-index: 1;
 }
-h1,h2,h3{font-family:'Outfit',sans-serif;font-weight:800;line-height:1.05;margin:0;letter-spacing:-.01em;}
-p{margin:0 0 1rem;}
-img{max-width:100%;display:block;}
-section{position:relative;padding:7rem 6vw;overflow:hidden;}
+
+/* CONTENEDOR ESTÁTICO PARA LA VIÑETA OSCURA */
+.crt-overlay{
+  position:fixed; inset:0;
+  z-index: 2; 
+  pointer-events:none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.5) 100%);
+  mix-blend-mode:multiply;
+  overflow: hidden;
+}
+
+/* LAS SCANLINES SE MUEVEN FÍSICAMENTE CON VELOCIDAD ULTRA RÁPIDA (0.2s) */
+.crt-overlay::before {
+  content: "";
+  position: absolute;
+  top: -20px; left: 0; right: 0; bottom: -20px;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.28) 0px,
+    rgba(0, 0, 0, 0.28) 2px,
+    transparent 2px,
+    transparent 5px
+  );
+  animation: crt-lines-scroll 0.2s linear infinite;
+}
+
+.crt-overlay::after{
+  content:"";
+  position:absolute; left:0; right:0; height:140px;
+  background:linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.03) 50%, rgba(255,255,255,0) 100%);
+  mix-blend-mode:overlay;
+  animation: crt-roll 12s linear infinite;
+}
+
+.main-content {
+  position: relative;
+  z-index: 3;
+}
+
+h1,h2,h3,h4{
+  font-family:'Outfit',sans-serif;
+  font-weight:900;
+  line-height:1.1;
+  margin:0;
+  letter-spacing:-.02em;
+  color:#ffffff;
+}
+
+p{
+  margin:0 0 1rem; 
+  opacity: 1;
+  font-weight: 500;
+  font-size: 1.15rem; 
+  line-height: 1.6;
+  color: #f0ebd9;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+img{max-width:100%;height:auto;display:block;border-radius:16px;}
+section{position:relative;padding:6rem 8vw;overflow:hidden;}
 @media(max-width:760px){section{padding:4.5rem 6vw;}}
 
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease, transform .7s ease;}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(0.25, 1, 0.5, 1), transform .6s cubic-bezier(0.25, 1, 0.5, 1);}
 .reveal.in{opacity:1;transform:translateY(0);}
-.reveal.delay1{transition-delay:.1s;}
-.reveal.delay2{transition-delay:.2s;}
+.reveal.delay1{transition-delay:.12s;}
+.reveal.delay2{transition-delay:.24s;}
 
-/* interactive hover on images: playful tilt + scale, Dropbox-brand style */
 .interactive{
   cursor:pointer;
-  transition:transform .45s cubic-bezier(.2,.9,.3,1.3), border-radius .45s ease, box-shadow .4s ease;
-  will-change:transform;
+  transition: transform .4s cubic-bezier(.16, 1, .3, 1), box-shadow .4s ease, border-color .4s ease;
 }
 .interactive:hover{
-  transform:scale(1.045) rotate(-2deg);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+  border-color: rgba(255,255,255,0.2);
 }
-.interactive.tilt-r:hover{transform:scale(1.045) rotate(2deg);}
 
 nav{
   position:fixed;top:0;left:0;right:0;z-index:50;
   display:flex;justify-content:space-between;align-items:center;
-  padding:1.2rem 6vw;
-  background:rgba(245,239,221,.85);
-  backdrop-filter:blur(6px);
+  padding:2rem 8vw;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
-nav img{height:36px;}
-nav .links{display:flex;gap:2rem;font-weight:600;font-size:.95rem;}
-nav a{color:var(--ink);text-decoration:none;opacity:.75;transition:opacity .2s;}
-nav a:hover{opacity:1;}
-@media(max-width:640px){nav .links{display:none;}}
+nav.scrolled {
+  padding: 0.8rem 8vw;
+  background: rgba(14, 22, 14, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+nav img{height:55px; opacity: 0.35; transition: height 0.5s ease, opacity 0.4s ease; width: auto;}
+nav.scrolled img {height: 46px; opacity: 1;}
+
+nav .links{display:flex;gap:2.5rem;font-weight:600;font-size:1.1rem;}
+nav a{
+  color:var(--cream);
+  text-decoration:none;
+  opacity:.4;
+  position: relative;
+  padding: 0.4rem 0;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; width: 100%; height: 2px;
+  background: var(--onion-red);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+nav a:hover, nav.scrolled a {opacity:.75;}
+nav a:hover {opacity:1; color: #ffffff;}
+nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+@media(max-width:760px){nav .links{display:none;}}
 
 #hero{
   min-height:100vh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding-top:4rem;
 }
-#hero .logo{width:min(560px,82vw);margin-bottom:.5rem;}
-#hero .studio{font-weight:600;font-size:1.05rem;color:var(--teal);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.8rem;}
-#hero p.tagline{max-width:640px;font-size:1.25rem;line-height:1.55;opacity:.85;margin-top:.6rem;font-weight:500;}
+#hero .logo{width:min(480px,80vw);margin-bottom:1.2rem; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.4));}
+#hero .studio{font-weight:800;font-size:1.5rem;color:#ffffff;letter-spacing:.12em;text-transform:uppercase;margin-bottom:0.8rem;}
+#hero p.tagline{max-width:680px;font-size:1.4rem;line-height:1.6;margin-top:.4rem;font-weight:600; opacity: 1;}
 .play-btn{
-  margin-top:2.2rem;padding:1rem 2.6rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:1.1rem;
-  background:var(--onion-red);color:var(--cream);border:none;border-radius:100px;cursor:pointer;
-  box-shadow:0 6px 0 #6e1f1e;transition:transform .15s ease, box-shadow .15s ease;
+  margin-top:2rem;padding:1rem 3.2rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:1.14rem;
+  background:var(--onion-red);color:#ffffff;border:none;border-radius:100px;cursor:pointer;
+  box-shadow: 0 4px 15px rgba(166, 48, 46, 0.3);
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
-.play-btn:hover{transform:translateY(-3px);box-shadow:0 9px 0 #6e1f1e;}
-.play-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #6e1f1e;}
-.scroll-hint{position:absolute;bottom:2.2rem;font-size:.95rem;opacity:.5;font-weight:500;}
+.play-btn:hover{transform:translateY(-2px); background:#bd3a37; box-shadow: 0 6px 20px rgba(166, 48, 46, 0.4);}
+.play-btn:active{transform:translateY(1px);}
+.scroll-hint{position:absolute;bottom:2rem;font-size:0.95rem;opacity:.5;font-weight:500;letter-spacing: 0.05em;}
 
-.blob{border-radius:62% 38% 51% 49%/41% 44% 56% 59%;overflow:hidden;background:rgba(0,0,0,.03);}
-.blob img{width:100%;height:auto;display:block;}
-.blob.alt{border-radius:38% 62% 63% 37%/45% 41% 59% 55%;}
-
-.eyebrow{font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em;display:inline-block;margin-bottom:.7rem;padding:.3rem .9rem;border-radius:20px;color:var(--cream);}
+.eyebrow{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;display:inline-block;margin-bottom:1rem;padding:.4rem 1.2rem;border-radius:30px;color:#ffffff;}
 .eyebrow.jungle{background:var(--jungle);}
 .eyebrow.navy{background:var(--navy);}
 .eyebrow.clay{background:var(--clay);}
+.eyebrow.teal{background:var(--teal);}
 
-#historia .historia-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center;max-width:1180px;margin:0 auto;}
-@media(max-width:840px){#historia .historia-grid{grid-template-columns:1fr;}}
-#historia h2{font-size:2.8rem;margin-bottom:1.3rem;}
-#historia p{font-size:1.1rem;line-height:1.7;opacity:.85;}
-.historia-img{width:100%;max-width:380px;margin:0 auto;}
+.clean-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 2.2rem;
+}
 
-.char-row{display:grid;grid-template-columns:.75fr 1.25fr;gap:3.5rem;align-items:center;max-width:1180px;margin:0 auto 5rem;}
-.char-row.reverse{grid-template-columns:1.25fr .75fr;}
-.char-row.reverse .char-img{order:2;}
-@media(max-width:800px){.char-row,.char-row.reverse{grid-template-columns:1fr;}.char-row.reverse .char-img{order:0;}}
-.char-img{width:100%;max-width:320px;justify-self:center;}
-.char-name{font-size:2.2rem;margin-bottom:.4rem;}
-.char-row p{line-height:1.7;font-size:1.05rem;opacity:.85;}
-.antagonist-row{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1rem;max-width:360px;margin:0 auto;}
-.antagonist-row .char-img{max-width:260px;}
+#historia .historia-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;}
+@media(max-width:840px){#historia .historia-grid{grid-template-columns:1fr; gap:2.5rem;}}
+#historia h2{font-size:3.2rem;margin-bottom:1.5rem; }
+.historia-img-wrapper{
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 0.8rem;
+  background: rgba(246, 240, 223, 0.82);
+}
+.historia-img-wrapper img{width:100%;object-fit:cover; border-radius: 16px;}
 
-#mundo .intro{max-width:680px;margin:0 auto 3.5rem;text-align:center;}
-#mundo h2{font-size:2.8rem;margin-bottom:1rem;}
-.biome-track{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.4rem;}
+.char-showcase {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media(max-width:840px){.char-showcase{grid-template-columns: 1fr;}}
+
+.char-card {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2rem;
+  align-items: center;
+}
+@media(max-width:640px){.char-card{grid-template-columns: 1fr; padding: 1.8rem;}}
+.char-card img {width: 100%; object-fit: cover; border-radius: 16px; background: rgba(0, 0, 0, 0);}
+.char-name{font-size:2.6rem;margin-bottom:.6rem; font-weight: 900;}
+
+.antagonist-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+.antagonist-card img { max-width: 300px; margin: 1rem auto; }
+
+#mundo .intro{max-width:650px;margin:0 auto 3rem;text-align:center;}
+#mundo h2{font-size:3.2rem;margin-bottom:1rem;}
+
+.biome-track{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  grid-auto-rows: minmax(160px, auto);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.biome-card.featured {
+  min-height: 220px;
+}
+.biome-card.featured:hover,
+.biome-card.featured:focus-within {
+  min-height: 360px;
+}
+
 @media(min-width:900px){
-  .biome-track{grid-template-columns:1.3fr 1fr 1fr;grid-auto-rows:210px;}
-  .biome-card:nth-child(1){grid-row:span 2;}
-  .biome-card:nth-child(5){grid-column:span 2;}
+  .biome-track{
+    grid-template-columns: 1.2fr 1fr 1fr;
+    grid-auto-rows: 190px;
+  }
+  .biome-card.featured{grid-row: span 2;}
+  
+  .biome-track:has(.biome-card.featured:hover),
+  .biome-track:has(.biome-card.featured:focus-within) {
+    grid-template-columns: 3.5fr 1fr 1fr;
+  }
+  
+  .biome-card.featured:hover,
+  .biome-card.featured:focus-within {
+    grid-row: span 3;
+    outline: none;
+    padding: 2.5rem;
+  }
 }
+
 .biome-card{
-  position:relative;color:var(--cream);border-radius:32px;padding:2rem;
-  display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;
-  min-height:220px;
-  transition:transform .4s cubic-bezier(.2,.9,.3,1.3), box-shadow .4s ease;
+  position:relative;
+  color:#ffffff;
+  border-radius:24px;
+  padding:1.8rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.biome-card:hover{transform:translateY(-10px) scale(1.015);box-shadow:0 22px 40px rgba(0,0,0,.18);}
-.biome-card h3{font-size:1.7rem;margin-bottom:.6rem;}
-.biome-card p{font-size:.96rem;line-height:1.55;opacity:.92;max-width:34ch;}
-.biome-num{
-  position:absolute;top:1.3rem;right:1.5rem;font-weight:800;font-size:3rem;opacity:.22;line-height:1;
+
+.biome-card h3{font-size:1.6rem; margin:0 0 .4rem 0; font-weight:800; z-index: 3; text-shadow: 0 2px 8px rgba(0,0,0,0.9); transition: font-size 0.4s ease;}
+.biome-card p{font-size:1rem; line-height:1.4; opacity:.95; margin:0; font-weight: 500; z-index: 3; text-shadow: 0 2px 6px rgba(0,0,0,0.9); max-width: 85%;}
+.biome-num{position:absolute; top:1rem; right:1.2rem; font-weight:900; font-size:2.4rem; opacity:.15; line-height:1; z-index: 3;}
+
+.biome-card.minor {
+  opacity: 0.85;
 }
-.biome-card.c1{background:var(--jungle);}
-.biome-card.c2{background:var(--teal);}
-.biome-card.c3{background:var(--khaki);}
-.biome-card.c4{background:var(--clay);}
-.biome-card.c5{background:var(--navy);}
+.biome-card.minor:hover {
+  opacity: 1;
+  border-color: rgba(255,255,255,0.15);
+}
 
-#enemigos h2{font-size:2.8rem;text-align:center;margin-bottom:.6rem;}
-#enemigos > .sub{text-align:center;max-width:600px;margin:0 auto 3rem;opacity:.8;}
-.enemy-sketch{max-width:760px;margin:0 auto 2.5rem;border-radius:30px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.12);}
-.enemy-list{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;max-width:820px;margin:0 auto;}
-.enemy-chip{background:var(--jungle);color:var(--cream);padding:.6rem 1.4rem;border-radius:50px;font-weight:700;font-size:1rem;transition:transform .2s ease;}
-.enemy-chip:hover{transform:translateY(-3px);}
-.boss-block{display:grid;grid-template-columns:.65fr 1.35fr;gap:3rem;align-items:center;max-width:1000px;margin:4rem auto 0;}
-@media(max-width:760px){.boss-block{grid-template-columns:1fr;}}
-.boss-block img{border-radius:40% 60% 55% 45%/55% 45% 60% 40%;}
-.boss-block h3{font-size:2rem;margin-bottom:.6rem;}
-.boss-block p{line-height:1.7;opacity:.85;}
+/* FONDO POR DEFECTO DE VALLE VERDURA */
+.biome-card.featured::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--jungle), #134e26);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1;
+  transition: filter 0.6s ease; /* Transición suave para quitar el color */
+}
 
-#musica{position:relative;overflow:hidden;}
-.music-wrap{max-width:760px;margin:0 auto;text-align:center;position:relative;z-index:2;}
-#musica h2{font-size:2.6rem;margin-bottom:1.2rem;}
-#musica p{font-size:1.1rem;line-height:1.75;opacity:.85;}
-.music-tags{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:2rem;}
-.music-tag{background:var(--navy);color:var(--cream);padding:.5rem 1.1rem;border-radius:20px;font-size:.9rem;font-weight:600;}
-.deco{position:absolute;pointer-events:none;z-index:1;will-change:transform;transition:margin .5s cubic-bezier(.2,.8,.3,1);}
-.deco img{width:100%;display:block;}
-@keyframes floaty1{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-18px) rotate(3deg);}}
-@keyframes floaty2{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(16px) rotate(-4deg);}}
-@keyframes floaty3{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-12px) rotate(-2deg);}}
+/* EFECTO: AL HACER HOVER SE VUELVE OSCURO MATE Y PIERDE EL COLOR (GRISCALE) */
+.biome-card.featured:hover::before,
+.biome-card.featured:focus-within::before {
+  filter: grayscale(100%) brightness(0.35); 
+}
 
-#contacto{text-align:center;padding-bottom:3rem;}
-#contacto h2{font-size:2.6rem;margin-bottom:1rem;}
-#contacto p{opacity:.8;margin-bottom:2rem;}
-.contact-links{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;}
+.biome-card.featured .slideshow-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: 2;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center right;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.biome-card.featured::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(10,15,10,0.8) 0%, rgba(0,0,0,0) 40%);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.biome-card.featured:hover,
+.biome-card.featured:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.biome-card.featured:hover h3,
+.biome-card.featured:focus-within h3 {
+  font-size: 2.2rem;
+}
+
+.biome-card.featured:hover::after,
+.biome-card.featured:focus-within::after {
+  opacity: 1;
+}
+
+.biome-card.featured:hover .slideshow-overlay,
+.biome-card.featured:focus-within .slideshow-overlay {
+  opacity: 1;
+  animation: smoothLandscapeSlideshow 12s infinite ease-in-out;
+}
+
+@media(max-width:760px){
+  .biome-card.featured .slideshow-overlay {
+    background-position: top center;
+    background-size: 100% auto;
+  }
+  .biome-card.featured::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(14,46,24,0.98) 85%);
+  }
+  .biome-card.featured:hover h3, .biome-card.featured:focus-within h3 { font-size: 1.8rem; }
+}
+
+@keyframes smoothLandscapeSlideshow {
+  0%, 100% { 
+    background-image: url('/assets/Cebollin Universo(11).png');
+    opacity: 1;
+  }
+  28% { opacity: 1; }
+  33.33% { 
+    background-image: url('/assets/Cebollin Universo(12).png');
+    opacity: 0.9;
+  }
+  61% { opacity: 1; }
+  66.66% { 
+    background-image: url('/assets/Cebollin Universo(13).png');
+    opacity: 0.9;
+  }
+  94% { opacity: 1; }
+}
+
+.biome-card.c2{background:linear-gradient(135deg, var(--teal), #06373d);}
+.biome-card.c3{background:linear-gradient(135deg, var(--khaki), #6e603b);}
+.biome-card.c4{background:linear-gradient(135deg, var(--clay), #593925);}
+.biome-card.c5{background:linear-gradient(135deg, var(--navy), #10232f);}
+
+#enemigos h2{font-size:3.2rem;text-align:center;margin-bottom:.6rem;}
+#enemigos > .sub{text-align:center;max-width:600px;margin:0 auto 2.5rem; font-size: 1.25rem;}
+
+.enemy-sketch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto 2.5rem;
+}
+@media(max-width:840px){.enemy-sketch-grid{grid-template-columns: 1fr;}}
+
+.enemy-sketch-card {
+  border: 1px solid var(--glass-border);
+  background: rgba(246, 240, 223, 0.85);
+  padding: 0.8rem;
+  border-radius: 24px;
+}
+.enemy-sketch-card img {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.enemy-list{display:flex;flex-wrap:wrap;justify-content:center;gap:0.8rem;max-width:800px;margin:0 auto 4rem;}
+.enemy-chip{background:rgba(255,255,255,0.06); border: 1px solid var(--glass-border); color:var(--cream); padding:.5rem 1.4rem; border-radius:50px; font-weight:600; font-size:1rem; transition: all .2s ease;}
+.enemy-chip:hover{background:var(--jungle); color:#ffffff; transform:translateY(-2px); border-color: transparent;}
+
+.boss-block{
+  display:grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap:3.5rem;
+  align-items:center;
+  max-width:1100px;
+  margin: 0 auto;
+}
+@media(max-width:760px){.boss-block{grid-template-columns:1fr; gap: 2rem;}}
+.boss-block img{width: 100%; height: auto; object-fit: cover; border-radius: 24px; border: 1px solid var(--glass-border); background: rgba(246, 240, 223, 0.85);}
+.boss-block h3{font-size:2.4rem;margin-bottom:.6rem; margin-top: 0.4rem;}
+
+.music-wrap{max-width:900px;margin:0 auto;text-align:center;}
+#musica h2{font-size:3.2rem;margin-bottom:1.5rem;}
+.music-credits { font-size: 1.1rem; opacity: 0.8; margin-top: -0.5rem; margin-bottom: 2.5rem; font-weight: 600;}
+
+.jazz-showcase {
+  margin: 0 auto 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem;
+  text-align: left;
+}
+.audio-player-card {
+  background: rgba(20, 35, 45, 0.75);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 2rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.audio-player-card h4 {
+  font-size: 1.35rem;
+  margin: 0 0 0.4rem 0;
+  color: #ffffff;
+}
+.audio-player-card .track-sub {
+  font-size: 0.85rem;
+  color: #67e3f5;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.2rem;
+}
+audio { width: 100%; margin-top: 0.5rem; }
+
+.music-tags{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;}
+.music-tag{background:rgba(27, 58, 75, 0.4); border: 1px solid rgba(255,255,255,0.05); color:var(--cream);padding:.5rem 1.2rem;border-radius:50px;font-size:0.95rem;font-weight:600;}
+
+#contacto{text-align:center;padding-top:4.5rem; padding-bottom:3rem;}
+#contacto h2{font-size:3.2rem;margin-bottom:1rem;}
+#contacto p{margin-bottom:2.5rem; font-size: 1.3rem;}
+.contact-links{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:4rem;}
 .contact-links a{
-  color:var(--ink);text-decoration:none;font-weight:700;
-  border:2px solid var(--ink);padding:.7rem 1.6rem;border-radius:40px;transition:.2s;
+  color:var(--cream);text-decoration:none;font-weight:600;font-size:1.1rem;
+  border:1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.2); padding:.8rem 2.2rem;border-radius:40px;transition:all .2s ease;
 }
-.contact-links a:hover{background:var(--ink);color:var(--cream);}
-footer{font-size:.85rem;opacity:.5;}
-/* ===== Old camera / CRT video shader overlay ===== */
-.crt-overlay{
-  position:fixed;inset:0;z-index:9999;pointer-events:none;
-  background:
-    repeating-linear-gradient(180deg,
-      rgba(0,0,0,.22) 0px, rgba(0,0,0,.22) 1px,
-      transparent 1px, transparent 3px),
-    radial-gradient(ellipse at center,
-      rgba(255,244,214,.06) 0%, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%),
-    radial-gradient(ellipse at center,
-      rgba(255,180,90,.10) 0%, rgba(80,40,10,.08) 60%, rgba(0,0,0,.25) 100%);
-  mix-blend-mode:multiply;
-  animation:crt-flicker 5s infinite;
+.contact-links a:hover{background:var(--cream);color:var(--ink); border-color: transparent; transform: translateY(-2px);}
+footer{font-size:0.95rem;opacity:.5; letter-spacing: 0.02em;}
+
+/* ANIMACIONES */
+@keyframes crt-lines-scroll {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(5px); } 
 }
-.crt-overlay::before{
-  content:"";
-  position:absolute;inset:-2px;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size:180px 180px;
-  opacity:.10;
-  mix-blend-mode:overlay;
-  animation:crt-grain .4s steps(1) infinite;
-}
-.crt-overlay::after{
-  content:"";
-  position:absolute;left:0;right:0;height:140px;
-  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,0));
-  mix-blend-mode:overlay;
-  animation:crt-roll 7s linear infinite;
-}
-@keyframes crt-flicker{
-  0%,100%{opacity:1;}
-  88%{opacity:1;}
-  89%{opacity:.82;}
-  90%{opacity:1;}
-  93%{opacity:.9;}
-  94%{opacity:1;}
-  96%{opacity:.94;}
-  97%{opacity:1;}
-}
-@keyframes crt-grain{
-  0%{transform:translate(0,0);}
-  25%{transform:translate(-3%,2%);}
-  50%{transform:translate(2%,-2%);}
-  75%{transform:translate(-2%,-3%);}
-  100%{transform:translate(3%,1%);}
-}
-@keyframes crt-roll{
-  0%{top:-140px;}
-  100%{top:100%;}
-}
+@keyframes crt-roll{ 0%{top:-140px;} 100%{top:100%;} }
 @media(prefers-reduced-motion:reduce){
-  .crt-overlay,.crt-overlay::before,.crt-overlay::after{animation:none;}
+  .crt-overlay::before, .crt-overlay::after{animation:none;}
+  .biome-card.featured:hover .slideshow-overlay {animation: none;}
 }
 </style>
 </head>
@@ -232,187 +503,201 @@ footer{font-size:.85rem;opacity:.5;}
 
 <div class="crt-overlay" aria-hidden="true"></div>
 
-<nav>
-  <img src="/assets/logo.png" alt="Cebollin">
-  <div class="links">
-    <a href="#historia">Historia</a>
-    <a href="#personajes">Personajes</a>
-    <a href="#mundo">Mundo</a>
-    <a href="#enemigos">Enemigos</a>
-    <a href="#contacto">Contacto</a>
-  </div>
-</nav>
+<div class="main-content">
 
-<section id="hero">
-  <span class="studio">Treehouse Studios presenta</span>
-  <img class="logo" src="/assets/logo.png" alt="Cebollin">
-  <p class="tagline">Un plataformero 2D donde tomas el rol de Cebollin, en un mundo de frutas y verduras antropomórficas. Explora, combate y derrota a la gran plaga mutante que amenaza su hogar.</p>
-  <button class="play-btn" onclick="window.location.href='/game/index.html'">▶ Jugar demo</button>
-  <span class="scroll-hint">desliza para descubrir el mundo ↓</span>
-</section>
+  <nav id="navbar">
+    <img src="/assets/Cebollin Pitch Deck(19).png" alt="Cebollin">
+    <div class="links">
+      <a href="#historia">Historia</a>
+      <a href="#personajes">Personajes</a>
+      <a href="#mundo">Mundo</a>
+      <a href="#enemigos">Enemigos</a>
+      <a href="#musica">Música</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </nav>
 
-<section id="historia">
-  <div class="historia-grid">
-    <div class="reveal">
-      <span class="eyebrow jungle">Historia</span>
-      <h2>Superación, familia y sacrificio</h2>
-      <p>Tomas el rol de Cebollin, una cebolla de una tribu de verduras que es atacada por una misteriosa raza de frutas mutadas por causas desconocidas.</p>
-      <p>Después de este ataque, decide investigar las fuentes del mutágeno que convirtió a estos seres en mutantes.</p>
-    </div>
-    <div class="blob interactive reveal delay1 historia-img">
-      <img src="/assets/Cebollin Universo(6).png" alt="Universo de Cebollin — bocetos de Padre y Madre Cebollin">
-    </div>
-  </div>
-</section>
+  <section id="hero">
+    <span class="studio">Treehouse Studios presents</span>
+    <img class="logo" src="/assets/logo.png" alt="Cebollin">
+    <p class="tagline">Explora, combate y derrota a la plaga mutante que amenaza el hogar de las verduras en un dinámico plataformero de acción 2D.</p>
+    <button class="play-btn" onclick="window.location.href='/game/index.html'">▶ Jugar demo</button>
+    <span class="scroll-hint">DESLIZA PARA EXPLORAR ↓</span>
+  </section>
 
-<section id="personajes">
-  <div class="char-row">
-    <div class="blob interactive char-img reveal">
-      <img src="/assets/Assets Cebollin(30).png" alt="Cebollin protagonista">
+  <section id="historia">
+    <div class="historia-grid">
+      <div class="reveal">
+        <span class="eyebrow jungle">Historia</span>
+        <h2>Superación, familia y sacrificio</h2>
+        <p>Controla a Cebollín tras el ataque de una misteriosa raza de frutas infectadas. Investiga el origen del mutágeno esporádico y salva a tu tribu antes de que sea tarde.</p>
+      </div>
+      <div class="historia-img-wrapper interactive reveal campaigners delay1">
+        <img src="/assets/Cebollin Universo(6).png" alt="Universo de Cebollin">
+      </div>
     </div>
-    <div class="reveal delay1">
-      <span class="eyebrow navy">Protagonista</span>
-      <h3 class="char-name">Cebollin</h3>
-      <p>Una cebolla más chica de lo normal, pero su personalidad carismática y necia compensa su falta de fuerza. Es ingenioso y tiene un corazón de hierro.</p>
-      <p>Usualmente las cebollas no son guerreras, pero su papá, un boxeador de antaño, le ha enseñado a usar sus hojas como puños.</p>
-    </div>
-  </div>
+  </section>
 
-  <div class="antagonist-row reveal delay1">
-    <div class="blob alt interactive tilt-r char-img">
-      <img src="/assets/Assets Cebollin(31).png" alt="Dr. Rabadin antagonista">
-    </div>
-    <span class="eyebrow clay">Antagonista</span>
-    <h3 class="char-name">Dr. Rabadin</h3>
-  </div>
-</section>
+  <section id="personajes">
+    <div class="char-showcase">
+      <div class="clean-card char-card interactive reveal">
+        <img src="/assets/cebollin.png" alt="Cebollin protagonist">
+        <div>
+          <span class="eyebrow navy">Protagonista</span>
+          <h3 class="char-name">Cebollin</h3>
+          <p>Pequeño, terco y con un corazón de hierro. Entrenado por su padre boxeador, compensa su tamaño con un ingenio brillante y hojas que golpean como puños.</p>
+        </div>
+      </div>
 
-<section id="mundo">
-  <div class="intro reveal">
-    <span class="eyebrow teal" style="background:var(--teal)">El mundo</span>
-    <h2>5 etapas, 5 biomas mutados</h2>
-    <p>La historia recorre lugares distintos, cada uno transformado a su manera por el mutágeno.</p>
-  </div>
-  <div class="biome-track reveal delay1">
-    <div class="biome-card c1">
-      <span class="biome-num">01</span>
-      <h3>Valle Verdura</h3>
-      <p>Hogar de la aldea de Cebollin. En las afueras rondan frutos del bosque salvajes, agresivos tras ser infectados por las esporas.</p>
+      <div class="clean-card antagonist-card interactive reveal delay1">
+        <div>
+          <span class="eyebrow clay">Antagonista</span>
+          <h3 class="char-name" style="font-size:2.2rem; margin-top: 0.4rem;">Dr. Rabadin</h3>
+        </div>
+        <img src="/assets/Cebollin Universo(7).png" alt="Dr. Rabadin Bhutan">
+        <p style="font-size: 1.05rem; margin: 0;">Mente maestra detrás de las esporas mutantes.</p>
+      </div>
     </div>
-    <div class="biome-card c2">
-      <span class="biome-num">02</span>
-      <h3>Rio Riviera</h3>
-      <p>Hogar de las verduras acuáticas: lechuga de agua, fruta roripa y taro, ahora asimiladas a insectos de río.</p>
-    </div>
-    <div class="biome-card c3">
-      <span class="biome-num">03</span>
-      <h3>Cordilleras Acoyote</h3>
-      <p>Hogar de las legumbres: frijoles, garbanzos, habas y guisantes, en la zona más seca del mundo Cebollin.</p>
-    </div>
-    <div class="biome-card c4">
-      <span class="biome-num">04</span>
-      <h3>Cuevas Andinas</h3>
-      <p>Hogar de los tubérculos andinos: ocas, ollucos, mashuas y yacones, metros bajo tierra.</p>
-    </div>
-    <div class="biome-card c5">
-      <span class="biome-num">05</span>
-      <h3>Abitio Bosque</h3>
-      <p>Hogar de las Abiciobayas, una raza de frutas que se creía extinta. Aquí el Dr. Rabadin descubrió la espora mutágena.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="enemigos">
-  <span class="eyebrow clay" style="display:block;width:fit-content;margin:0 auto .8rem">Criaturas mutadas</span>
-  <h2 class="reveal">Frutos del bosque !</h2>
-  <p class="sub reveal delay1">En Valle Verdura, las moras y fresas fueron las primeras en mutar bajo el efecto de la espora.</p>
-  <div class="enemy-sketch interactive reveal delay1">
-    <img src="/assets/Cebollin Pitch Deck(17).png" alt="Bocetos de enemigos: Fresaraña, Moramosca, Explotamora, Frambeja">
-  </div>
-  <div class="enemy-list reveal delay2">
-    <span class="enemy-chip">Fresaraña</span>
-    <span class="enemy-chip">Moramosca</span>
-    <span class="enemy-chip">Explotamora</span>
-    <span class="enemy-chip">Frambeja</span>
-  </div>
-
-  <div class="boss-block reveal delay2">
-    <img class="interactive" src="/assets/Cebollin Pitch Deck(18).png" alt="Lily Tlacuache, jefe del primer acto">
-    <div>
-      <span class="eyebrow navy">Jefe — Acto 1</span>
-      <h3>Lily Tlacuache</h3>
-      <p>Después de ser infectada por consumir moras mutadas, se vuelve loca y ataca la aldea de Cebollin. Tras ser derrotada, regresa a su forma de siempre y ayuda a Cebollin a llegar a la siguiente zona.</p>
+  <section id="mundo">
+    <div class="intro reveal">
+      <span class="eyebrow teal">El mundo</span>
+      <h2>5 etapas, 5 biomas mutados</h2>
+      <p>Cinco ecosistemas únicos transformados por completo por los efectos del mutágeno.</p>
     </div>
-  </div>
-</section>
+    <div class="biome-track reveal delay1">
+      
+      <div class="biome-card featured interactive" tabindex="0">
+        <div class="slideshow-overlay"></div>
+        <span class="biome-num">01</span>
+        <h3>Valle Verdura</h3>
+        <p>Hogar de la aldea, rodeado por frutos del bosque hostiles infectados por esporas.</p>
+      </div>
 
-<section id="musica">
-  <div class="deco" style="width:110px;top:8%;left:4%;animation:floaty1 7s ease-in-out infinite;">
-    <img src="/assets/Assets Cebollin(30).png" alt="">
-  </div>
-  <div class="deco" style="width:90px;top:65%;left:9%;animation:floaty2 6s ease-in-out infinite;animation-delay:.6s;">
-    <img src="/assets/Assets Cebollin(26).png" alt="">
-  </div>
-  <div class="deco" style="width:80px;top:12%;right:6%;animation:floaty3 8s ease-in-out infinite;animation-delay:1.2s;">
-    <img src="/assets/Assets Cebollin(25).png" alt="">
-  </div>
-  <div class="deco" style="width:220px;bottom:4%;right:2%;opacity:.85;animation:floaty2 9s ease-in-out infinite;animation-delay:.3s;">
-    <img src="/assets/Assets Cebollin(27).png" alt="">
-  </div>
-  <div class="deco" style="width:70px;bottom:10%;left:20%;animation:floaty1 6.5s ease-in-out infinite;animation-delay:.9s;">
-    <img src="/assets/Assets Cebollin(24).png" alt="">
-  </div>
-  <div class="deco" style="width:150px;top:40%;right:14%;opacity:.7;animation:floaty3 10s ease-in-out infinite;">
-    <img src="/assets/Assets Cebollin(29).png" alt="">
-  </div>
+      <div class="biome-card minor interactive c2">
+        <span class="biome-num">02</span>
+        <h3>Rio Riviera</h3>
+        <p>Territorio de flora acuática asimilada por feroces formas de insectos fluviales.</p>
+      </div>
 
-  <div class="music-wrap reveal">
-    <span class="eyebrow navy">Identidad musical</span>
-    <h2>"Lavanda" de Jazz...</h2>
-    <p>La música original de Cebollin conecta al jugador con el caos y la naturaleza del juego: acompañamiento rítmico con batería (crash y ride) que reacciona al combate, y fades ambientales que cambian del bosque al río según el bioma que atraviesas.</p>
-    <p>Cada acto tiene su propio track, sincronizado con el ritmo de exploración, la intensidad del rushdown y las fases de cada jefe.</p>
-    <div class="music-tags">
-      <span class="music-tag">Estilo Jazz Original</span>
-      <span class="music-tag">Feedback rítmico de combate</span>
-      <span class="music-tag">Fades ambientales por bioma</span>
-      <span class="music-tag">Tracks sincronizados a jefes</span>
+      <div class="biome-card minor interactive c3">
+        <span class="biome-num">03</span>
+        <h3>Cordilleras Acoyote</h3>
+        <p>La zona más árida del mundo vegetal, habitada por legumbres y guisantes salvajes.</p>
+      </div>
+
+      <div class="biome-card minor interactive c4">
+        <span class="biome-num">04</span>
+        <h3>Cuevas Andinas</h3>
+        <p>Un laberinto subterráneo donde los antiguos tubérculos resisten bajo tierra.</p>
+      </div>
+
+      <div class="biome-card minor interactive c5">
+        <span class="biome-num">05</span>
+        <h3>Abitio Bosque</h3>
+        <p>El origen de la espora, donde yace la misteriosa raza extinta de las Abiciobayas.</p>
+      </div>
+
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="contacto">
-  <h2>Sigue el desarrollo</h2>
-  <p>Cebollin está en preproducción. Síguenos para novedades y la fecha del demo jugable.</p>
-  <div class="contact-links">
-    <a href="mailto:contacto@cebollingame.com">Email</a>
-    <a href="#">Instagram</a>
-    <a href="#">TikTok</a>
-  </div>
-  <footer>&copy; 2026 Treehouse Studios · Cebollin</footer>
-</section>
+  <section id="enemigos">
+    <span class="eyebrow clay" style="display:block;width:fit-content;margin:0 auto 1rem">Criaturas mutadas</span>
+    <h2 class="reveal">Frutos del bosque !</h2>
+    <p class="sub reveal delay1">Las moras y fresas del valle fueron las primeras víctimas en mutar bajo el efecto de la infección.</p>
+    
+    <div class="enemy-sketch-grid reveal delay1">
+      <div class="enemy-sketch-card interactive">
+        <img src="/assets/Cebollin Pitch Deck(20).png" alt="Bocetos de enemigos 1">
+      </div>
+      <div class="enemy-sketch-card interactive">
+        <img src="/assets/Concept Art.png" alt="Bocetos de enemigos 2">
+      </div>
+      <div class="enemy-sketch-card interactive">
+        <img src="/assets/Concept Art(1).png" alt="Bocetos de enemigos 3">
+      </div>
+    </div>
+    
+    <div class="enemy-list reveal delay2">
+      <span class="enemy-chip">Fresaraña</span>
+      <span class="enemy-chip">Moramosca</span>
+      <span class="enemy-chip">Explotamora</span>
+      <span class="enemy-chip">Frambeja</span>
+    </div>
+    
+    <div class="clean-card boss-block interactive reveal delay1">
+      <img src="/assets/tlacuache.png" alt="Lily Tlacuache, jefe del primer acto">
+      <div>
+        <span class="eyebrow navy">Jefe — Acto 1</span>
+        <h3>Lily Tlacuache</h3>
+        <p>Enloquecida temporalmente por las moras mutantes. Al derrotarla, recupera la cordura y se une a ti para guiarte hacia la siguiente región.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="musica">
+    <div class="music-wrap reveal">
+      <span class="eyebrow navy">Identidad musical</span>
+      <h2>"Lavanda" de Jazz...</h2>
+      <p>Banda sonora dinámica que evoluciona junto al combate con percusión reactiva y transiciones fluidas de ambiente según el bioma que explores.</p>
+      <p class="music-credits">Música por Fernando "Junfez" — @junfez en Instagram</p>
+      
+      <div class="jazz-showcase">
+        <div class="audio-player-card interactive">
+          <h4>Acto I: Valle Verdura</h4>
+          <div class="track-sub">Cave Conondrum / Classic Jazz</div>
+          <audio controls preload="none">
+            <source src="../tracks/valle_verdura.mp3" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio o el archivo no se encuentra.
+          </audio>
+        </div>
+        
+        <div class="audio-player-card interactive">
+          <h4>Tema de Combate</h4>
+          <div class="track-sub">Veggie Theme</div>
+          <audio controls preload="none">
+            <source src="../tracks/combate_jazz.mp3" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio o el archivo no se encuentra.
+          </audio> 
+        </div>
+      </div>
+
+      <div class="music-tags">
+        <span class="music-tag">Estilo Jazz Original</span>
+        <span class="music-tag">Feedback rítmico de combate</span>
+        <span class="music-tag">Fades ambientales por bioma</span>
+        <span class="music-tag">Tracks sincronizados a jefes</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <h2>Sigue el desarrollo</h2>
+    <p>Cebollín está en preproducción. Mantente al tanto para la próxima demo pública.</p>
+    <div class="contact-links">
+      <a href="mailto:pablosaul2312@gmail.com">Email</a>
+      <a href="https://www.instagram.com/cebollingame/">Instagram</a>
+    </div>
+    <footer>&copy; 2026 Treehouse Studios · Cebollin</footer>
+  </section>
+
+</div>
 
 <script>
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
-},{threshold:.18});
+},{threshold:.1});
 revealEls.forEach(el=>io.observe(el));
 
-// Parallax de assets organicos reactivo al mouse en la seccion de musica
-const musicSection = document.getElementById('musica');
-const decos = musicSection.querySelectorAll('.deco');
-musicSection.addEventListener('mousemove', (e)=>{
-  const rect = musicSection.getBoundingClientRect();
-  const px = (e.clientX - rect.left) / rect.width - 0.5;
-  const py = (e.clientY - rect.top) / rect.height - 0.5;
-  decos.forEach((el, i)=>{
-    const depth = (i % 3 + 1) * 10;
-    el.style.marginLeft = `${px * depth}px`;
-    el.style.marginTop = `${py * depth}px`;
-  });
-});
-musicSection.addEventListener('mouseleave', ()=>{
-  decos.forEach(el=>{ el.style.marginLeft = '0px'; el.style.marginTop = '0px'; });
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 40) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
 });
 </script>
 
