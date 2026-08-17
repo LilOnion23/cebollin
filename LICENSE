@@ -31,7 +31,8 @@ este repositorio (index.html en la raíz). Lo siguiente NO está cubierto por MI
   logo, personajes). Propiedad de Pablo Saúl / Treehouse Studios. Todos los
   derechos reservados; usados con permiso — no redistribuir ni remezclar sin
   autorización.
-- Música — `tracks/*.mp3`. Propiedad de sus autores; usada con permiso.
+- Música — `tracks/*.mp3`, por Fernando "Junfez" (@junfez). Propiedad de su
+  autor; usada con permiso.
 - El juego exportado — carpeta `game/`. El contenido del juego (assets, `*.pck`,
   el `.wasm` del juego) es propiedad de Pablo Saúl / Treehouse Studios. El
   runtime de Godot Engine incluido en esa carpeta conserva su propia licencia
