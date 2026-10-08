@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cebollín Press Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&display=swap">
+<style>
+/* Layout: una revista de cómic de los 90 — portada, páginas con viñetas, cajas de narración y globos;
+   las fotos y capturas realistas rompen los bordes de las viñetas como contraste. Un solo look (papel de periódico). */
+:root{
+  --paper:#efe0bf;      /* papel de cómic envejecido */
+  --paper-2:#e6d2a6;
+  --ink:#1c1612;        /* tinta */
+  --red:#c42a1c;        /* sombra roja del logo */
+  --yellow:#f3b424;     /* amarillo del logo */
+  --green:#1d7f52;      /* hojas de Cebollín */
+  --cyan:#2d6f93;       /* cian de imprenta */
+  --display:"Bangers","Impact","Arial Black",sans-serif;
+  --body:"Comic Neue","Trebuchet MS",sans-serif;
+  --hand:"Permanent Marker","Comic Neue",cursive;
+  --border:4px solid var(--ink);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, transparent 55%, rgba(120,80,30,.18) 100%),
+    url("a/papel.webp");
+  background-size:auto,1024px 1024px;
+  background-attachment:fixed,scroll;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:var(--ink)}
+:focus-visible{outline:3px dashed var(--red);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,3vw,36px);padding-block:28px 60px}
+
+/* ---------- utilidades de cómic ---------- */
+.halftone{background-image:radial-gradient(var(--dot,rgba(28,22,18,.22)) 1.3px,transparent 1.6px);background-size:7px 7px}
+.panel{position:relative;border:var(--border);background:var(--paper);box-shadow:6px 6px 0 var(--ink)}
+.caption{display:inline-block;background:var(--yellow);border:3px solid var(--ink);padding:.35em .7em;font-family:var(--body);font-weight:700;text-transform:uppercase;font-size:.82rem;letter-spacing:.04em;line-height:1.3;box-shadow:3px 3px 0 var(--ink)}
+.caption.blue{background:#cfe3ea}
+.sfx{font-family:var(--display);color:var(--yellow);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--red);letter-spacing:.03em;line-height:.9}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(2.4rem,6vw,4rem);line-height:.95;margin:0;letter-spacing:.02em;color:var(--ink);text-shadow:3px 3px 0 var(--yellow),5px 5px 0 var(--red);text-wrap:balance}
+h3{font-family:var(--display);font-weight:400;font-size:1.7rem;letter-spacing:.03em;margin:0 0 .3em;line-height:1}
+p{margin:0 0 1em;max-width:64ch}
+.page{margin-top:clamp(56px,9vw,100px)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:26px;border-bottom:var(--border);padding-bottom:12px}
+.page-no{font-family:var(--display);font-size:1.1rem;background:var(--ink);color:var(--paper);padding:.15em .6em;transform:rotate(2deg)}
+
+/* ---------- portada ---------- */
+.cover{position:relative;margin-top:30px}
+.cover-frame{position:relative;border:6px solid var(--ink);box-shadow:10px 10px 0 var(--ink);overflow:hidden;aspect-ratio:1232/706;background:#d8d2c4}
+.cover-frame>img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.05)}
+.stamp{position:absolute;top:-26px;left:-16px;z-index:6;width:clamp(96px,12vw,138px);transform:rotate(-4deg);filter:drop-shadow(2px 3px 2px rgba(28,22,18,.35))}
+.stamp-paper{padding:10px;background:
+  radial-gradient(circle at 50% 0,var(--paper) 4px,transparent 4.6px) top/12px 10px repeat-x,
+  radial-gradient(circle at 50% 100%,var(--paper) 4px,transparent 4.6px) bottom/12px 10px repeat-x,
+  radial-gradient(circle at 0 50%,var(--paper) 4px,transparent 4.6px) left/10px 12px repeat-y,
+  radial-gradient(circle at 100% 50%,var(--paper) 4px,transparent 4.6px) right/10px 12px repeat-y,
+  #fffdf6}
+.stamp-inner{border:3px solid var(--ink);text-align:center;text-transform:uppercase;padding:6px 4px 5px;color:var(--ink);font-family:var(--display);line-height:.92;letter-spacing:.06em}
+.stamp-inner small{display:block;font-size:clamp(.62rem,.9vw,.8rem)}
+.stamp-inner big{display:block;font-size:clamp(1.05rem,1.6vw,1.45rem)}
+.stamp-inner img{width:58%;margin:4px auto 3px;filter:grayscale(1) contrast(1.4)}
+.stamp-inner .rule{display:block;height:3px;background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 9px);margin:3px 6px}
+.burst{position:absolute;right:-16px;top:-34px;z-index:6;width:clamp(150px,22vw,230px);aspect-ratio:1;display:grid;place-items:center;text-align:center;
+  clip-path:polygon(50% 0,61% 16%,79% 6%,79% 25%,98% 24%,87% 40%,100% 54%,84% 62%,92% 80%,73% 79%,68% 98%,53% 85%,38% 100%,32% 81%,12% 88%,17% 68%,0 58%,14% 45%,3% 28%,22% 25%,20% 5%,38% 15%);
+  background:var(--red);transform:rotate(8deg)}
+.burst::before{content:"";position:absolute;inset:7px;background:var(--yellow);clip-path:inherit}
+.burst p{position:relative;margin:0;font-family:var(--display);font-size:clamp(.95rem,1.6vw,1.3rem);line-height:1;padding:24%;color:var(--ink)}
+.burst p big{display:block;font-size:1.7em;margin:.08em 0;color:var(--red);-webkit-text-stroke:1px var(--ink)}
+.veg{position:absolute;z-index:4;pointer-events:none;filter:drop-shadow(4px 6px 6px rgba(0,0,0,.35))}
+.veg.fern{left:-48px;bottom:-60px;width:clamp(150px,24vw,300px)}
+.veg.rock{right:-40px;bottom:-70px;width:clamp(150px,22vw,280px)}
+.veg.tree{right:-90px;top:-120px;width:clamp(110px,15vw,210px);z-index:1}
+.veg.till{left:22%;bottom:-48px;width:clamp(80px,10vw,130px);transform:rotate(-12deg)}
+.cover-tag{position:relative;z-index:5;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;margin-top:-18px;padding-left:clamp(0px,6vw,80px)}
+.cover-tag .caption{font-size:clamp(.85rem,1.6vw,1.05rem)}
+.cover-tag .caption:first-child{transform:rotate(-1.5deg)}
+.tagline{margin-top:58px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.tagline h1{font-family:var(--display);font-weight:400;font-size:clamp(2rem,4.6vw,3.3rem);line-height:1;margin:0;text-wrap:balance;letter-spacing:.02em}
+.tagline h1 span{color:var(--red)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-family:var(--display);font-size:1.25rem;letter-spacing:.04em;text-decoration:none;color:var(--ink);background:var(--yellow);border:3px solid var(--ink);padding:.35em .9em;box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s;display:inline-block}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.btn.alt{background:var(--paper)}
+
+/* ---------- ficha ---------- */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:0;border:var(--border);box-shadow:6px 6px 0 var(--ink);background:var(--paper)}
+.fact{padding:16px 18px;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);margin:0 -3px -3px 0;min-width:0}
+.fact dt{font-family:var(--display);font-size:1.05rem;letter-spacing:.05em;color:var(--red)}
+.fact dd{margin:0;font-weight:700;font-size:1.05rem;overflow-wrap:anywhere}
+.fact dd small{display:block;font-weight:400;font-size:.88rem}
+
+/* ---------- historia ---------- */
+.story{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;align-items:start}
+.story .panel{padding:26px 24px 22px}
+.story .panel .caption{position:absolute;top:-16px;left:14px}
+.story-art{display:grid;gap:22px}
+.story-art .panel{padding:0;overflow:hidden}
+.story-art .panel img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.bubble{position:relative;background:#fffdf6;border:3px solid var(--ink);border-radius:50% 46% 48% 52%/55% 50% 50% 45%;padding:22px 30px;font-weight:700;text-align:center;font-size:1.05rem;max-width:420px}
+.bubble::after{content:"";position:absolute;left:22%;bottom:-26px;width:34px;height:30px;background:#fffdf6;border:3px solid var(--ink);border-top:0;border-left:0;clip-path:polygon(0 0,100% 0,15% 100%);transform:skewX(-20deg)}
+.speaker{display:flex;align-items:flex-end;gap:12px;margin-top:6px}
+.speaker img{width:96px;flex:none}
+
+/* ---------- capturas ---------- */
+.shots{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.shot{position:relative;border:var(--border);box-shadow:6px 6px 0 var(--ink);overflow:hidden;background:#111;margin:0}
+.shot img{width:100%;height:100%;object-fit:cover;aspect-ratio:16/9}
+.shot figcaption{position:absolute;left:10px;bottom:10px;max-width:calc(100% - 20px)}
+.shot.big{grid-column:span 6}
+.shot.half{grid-column:span 3}
+.shot.big img{aspect-ratio:16/8}
+
+/* ---------- animaciones ---------- */
+.leafinfo{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;padding:20px 24px;margin-bottom:26px;background-color:#e9f1df;background-image:radial-gradient(rgba(29,127,82,.22) 1.3px,transparent 1.6px);background-size:7px 7px}
+.leafinfo img{width:110px}
+.leafinfo p{margin:.7em 0 0;font-size:1.05rem}
+.anims{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.anim{position:relative;border:var(--border);box-shadow:6px 6px 0 var(--ink);aspect-ratio:1;display:grid;place-items:center;overflow:hidden;margin:0}
+.anim{background:#000}
+.anim video{width:100%;height:100%;object-fit:contain;display:block}
+.anim .sfx{position:absolute;top:10px;right:12px;font-size:clamp(2rem,4vw,3rem);transform:rotate(8deg);z-index:2}
+.anim figcaption{position:absolute;left:10px;bottom:10px;z-index:2}
+.speedlines{position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.55) 0 3deg,transparent 3deg 14deg);opacity:.6}
+
+/* ---------- características ---------- */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature{padding:20px 20px 16px;min-width:0}
+.feature:nth-child(odd){transform:rotate(-.6deg)}
+.feature:nth-child(even){transform:rotate(.5deg)}
+.feature h3{color:var(--red)}
+.feature p{margin:0;font-size:1rem}
+
+/* ---------- personajes ---------- */
+.hero-card{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:28px;padding:24px;align-items:center}
+.hero-card .portrait{background:var(--yellow);border:3px solid var(--ink);padding:18px;--dot:rgba(196,42,28,.3)}
+.poses{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.poses img{border:3px solid var(--ink);background:#fffdf6;aspect-ratio:1;object-fit:contain;padding:6px;width:100%}
+.villain{display:grid;grid-template-columns:1fr minmax(0,260px);gap:24px;padding:24px;margin-top:26px;background:#2a2622;color:var(--paper);align-items:center}
+.villain h3{color:var(--yellow)}
+.villain p{color:#efe0bf}
+.mystery{aspect-ratio:1;border:3px dashed var(--yellow);display:grid;place-items:center;text-align:center;font-family:var(--display);color:var(--yellow);font-size:1.4rem;padding:16px;background:radial-gradient(rgba(243,180,36,.18) 1.3px,transparent 1.6px) 0 0/7px 7px}
+.mystery b{font-size:5rem;line-height:1;display:block;font-weight:400}
+.enemies{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
+.enemy{border:var(--border);box-shadow:5px 5px 0 var(--ink);background:#fffdf6;padding:10px 10px 12px;text-align:center;margin:0}
+.enemy .art{height:170px;display:grid;place-items:center;border:3px solid var(--ink);background-color:#e9f1df;--dot:rgba(29,127,82,.25);margin-bottom:10px;overflow:hidden}
+.enemy .art img{max-height:150px;width:auto;object-fit:contain}
+.enemy h4{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:0;letter-spacing:.03em;line-height:1}
+.enemy small{font-weight:700;font-size:.85rem;color:#5a4a3a}
+.companion{display:grid;grid-template-columns:1fr minmax(0,1.3fr);gap:24px;padding:24px;margin-top:26px;align-items:center}
+.companion img{border:3px solid var(--ink);background:#fff}
+
+/* ---------- dirección de arte ---------- */
+.artdir{display:grid;gap:26px}
+.artdir>div:first-child{columns:2 300px;column-gap:32px}
+.artdir>div:first-child p{break-inside:avoid}
+.carousel{position:relative;border:var(--border);box-shadow:6px 6px 0 var(--ink);background:#fff}
+.moods{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
+.moods::-webkit-scrollbar{display:none}
+.moods figure{flex:0 0 100%;scroll-snap-align:center;margin:0;padding:clamp(10px,2vw,24px);display:grid;place-items:center}
+.moods figure img{max-height:520px;width:auto;max-width:100%;object-fit:contain}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:48px;height:48px;font-family:var(--display);font-size:1.8rem;line-height:1;background:var(--yellow);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;color:var(--ink)}
+.car-btn.prev{left:-14px}.car-btn.next{right:-14px}
+.car-btn:active{transform:translateY(-50%) translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.car-dots{display:flex;justify-content:center;gap:10px;padding:0 0 14px}
+.car-dots button{width:14px;height:14px;border:2px solid var(--ink);background:#fff;padding:0;cursor:pointer;transform:rotate(45deg)}
+.car-dots button[aria-current="true"]{background:var(--red)}
+.note{font-family:var(--hand);font-size:1.15rem;color:var(--cyan);transform:rotate(-2deg);display:inline-block}
+
+/* ---------- cuaderno ---------- */
+.sketches{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.sketches figure{margin:0;background:#fff;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+.sketches figure img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+.sketches .wide{grid-column:span 3}
+.sketches .wide img{aspect-ratio:auto;object-fit:contain}
+.sketches .two{grid-column:span 2}
+.sketches .two img,.sketches .one img{aspect-ratio:auto;object-fit:contain;height:auto}
+
+/* ---------- cronología ---------- */
+.timeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:var(--border);box-shadow:6px 6px 0 var(--ink)}
+.timeline li{padding:18px 16px;border-right:3px solid var(--ink);background:var(--paper);min-width:0}
+.timeline li:last-child{border-right:0;background:var(--yellow)}
+.timeline .yr{font-family:var(--display);font-size:2.2rem;line-height:1;color:var(--red);display:block}
+.timeline b{display:block;margin:.2em 0 .3em}
+.timeline p{font-size:.92rem;margin:0}
+.devstory{display:grid;gap:26px;margin-top:30px;max-width:860px}
+.devstory .panel{padding:24px}
+.quote{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.1;letter-spacing:.02em;margin:0 0 .5em}
+/* ---------- banda sonora ---------- */
+.ost{background:var(--cyan);border:var(--border);box-shadow:8px 8px 0 var(--ink);padding:clamp(18px,3vw,32px);--dot:rgba(0,0,0,.2);color:#f4ead2;position:relative}
+.ost-intro{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;margin-bottom:24px}
+.ost-intro p{color:#f4ead2;margin:0}
+.ost-intro .sfx{font-size:clamp(3rem,7vw,5rem);transform:rotate(-6deg)}
+.tracks{display:grid;gap:18px}
+.track{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:16px 18px;min-width:0}
+.play{width:68px;height:68px;border:0;padding:0;cursor:pointer;background:var(--red);display:grid;place-items:center;position:relative;
+  clip-path:polygon(50% 0,61% 16%,79% 6%,79% 25%,98% 24%,87% 40%,100% 54%,84% 62%,92% 80%,73% 79%,68% 98%,53% 85%,38% 100%,32% 81%,12% 88%,17% 68%,0 58%,14% 45%,3% 28%,22% 25%,20% 5%,38% 15%)}
+.play::before{content:"";position:absolute;inset:5px;background:var(--yellow);clip-path:inherit}
+.play svg{position:relative;width:24px;height:24px;fill:var(--ink)}
+.play:active{transform:scale(.94)}
+.play:focus-visible{outline:none;filter:drop-shadow(0 0 0 var(--ink)) drop-shadow(3px 3px 0 var(--red))}
+.track-info{min-width:0}
+.track-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.track h3{margin:0;font-size:clamp(1.6rem,3vw,2.1rem)}
+.track-meta{font-weight:700;font-size:.9rem;color:#5a4a3a}
+.time{font-weight:700;font-variant-numeric:tabular-nums;font-size:.95rem}
+.wave{display:flex;align-items:center;gap:2px;height:54px;margin-top:8px;cursor:pointer;touch-action:none}
+.wave span{flex:1;min-width:1px;background:#b9a98a;border-radius:1px}
+.wave span.on{background:var(--red)}
+.track.playing{background:#fff6dc}
+.ost-credit{margin-top:20px;font-family:var(--hand);color:var(--yellow);font-size:1.1rem;transform:rotate(-1deg)}
+
+/* ---------- descargas ---------- */
+.downloads{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(196px,100%),1fr));gap:18px}
+.dl{border:var(--border);box-shadow:5px 5px 0 var(--ink);background:#fffdf6;display:flex;flex-direction:column;min-width:0}
+.dl .thumb{aspect-ratio:16/10;display:grid;place-items:center;border-bottom:3px solid var(--ink);overflow:hidden;background-color:#d9cdb3;--dot:rgba(28,22,18,.15)}
+.dl .thumb.dark{background:#2a2622}
+.dl .thumb{position:relative;display:block}
+.dl .thumb>img,.dl .thumb>video{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:contain;padding:10px;display:block}
+.dl .thumb>.sfx{position:absolute;inset:0;display:grid;place-items:center}
+.dl .thumb>img.fill{object-fit:cover;padding:0}
+.dl div.meta{padding:12px 14px 14px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;flex:1}
+.dl div.meta .dl-btn{margin-top:auto}
+.dl b{font-size:.98rem}
+.dl small{display:block;color:#5a4a3a;font-size:.82rem}
+.dl-btn{font-family:var(--display);font-size:1.05rem;letter-spacing:.04em;color:var(--ink);background:var(--yellow);border:2px solid var(--ink);padding:.15em .6em;box-shadow:2px 2px 0 var(--ink);white-space:nowrap;cursor:pointer}
+.dl-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.dl-btn[disabled]{opacity:.6;cursor:progress}
+.dl .thumb>video{padding:0}
+.dl .thumb.music{background:var(--cyan)}
+.dl .thumb.music .sfx{font-size:3.4rem}
+.dl-group{margin:34px 0 14px;font-size:1.8rem}
+.dl-all{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:22px 24px;background-color:var(--yellow);--dot:rgba(196,42,28,.22)}
+.dl-all h3{font-size:2rem}
+.dl-all p{margin:0}
+.dl-all-actions{display:grid;gap:8px;justify-items:start}
+.dl-all .btn{font-size:1.6rem;background:var(--red);color:#fffdf6;cursor:pointer}
+.dl-status{font-weight:700;font-size:.92rem;min-height:1.2em}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;background:var(--ink);color:var(--paper);padding:.6em 1em;border:3px solid var(--yellow);font-weight:700;max-width:calc(100% - 32px)}
+
+/* ---------- créditos y contacto ---------- */
+.end{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.credits{padding:24px}
+.credits dl{margin:0;display:grid;gap:14px}
+.credits dt{font-weight:700;font-size:1.1rem}
+.credits dd{margin:0;color:#4a3c30}
+.contact{padding:24px;background:var(--yellow);--dot:rgba(196,42,28,.22)}
+.contact-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:2px dashed var(--ink)}
+.contact-row:last-of-type{border-bottom:0}
+.contact-row span{font-family:var(--display);font-size:1rem;letter-spacing:.05em;color:var(--red);display:block}
+.contact-row strong{font-size:1.1rem;user-select:all;overflow-wrap:anywhere}
+.copy{font-family:var(--body);font-weight:700;font-size:.85rem;background:var(--paper);border:2px solid var(--ink);padding:.3em .7em;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.socials a{font-weight:700;text-decoration:none;background:var(--paper);border:2px solid var(--ink);padding:.3em .7em;box-shadow:2px 2px 0 var(--ink)}
+footer{margin-top:60px;text-align:center;font-size:.9rem;border-top:var(--border);padding-top:20px}
+footer img{width:min(320px,70%);margin:0 auto 10px}
+
+
+/* ---------- textura papel cascarón en cada carta ---------- */
+.panel,.facts,.enemy,.dl,.track,.timeline li,.carousel,.sketches figure,.cover-tag .caption,.caption{
+  background-image:url("a/cascaron.webp");background-size:512px 512px;background-blend-mode:multiply}
+.panel.halftone,.ost.halftone,.portrait.halftone,.enemy .art.halftone,.dl .thumb.halftone{
+  background-image:radial-gradient(var(--dot,rgba(28,22,18,.22)) 1.3px,transparent 1.6px),url("a/cascaron.webp");
+  background-size:7px 7px,512px 512px;background-blend-mode:normal,multiply}
+.leafinfo.panel{background-image:radial-gradient(rgba(29,127,82,.22) 1.3px,transparent 1.6px),url("a/cascaron.webp");background-size:7px 7px,512px 512px;background-blend-mode:normal,multiply}
+.ost{background-image:radial-gradient(var(--dot) 1.3px,transparent 1.6px),url("a/cascaron.webp");background-size:7px 7px,512px 512px;background-blend-mode:normal,multiply}
+.portrait.halftone,.enemy .art.halftone{background-blend-mode:normal,multiply}
+.timeline li:last-child{background-color:var(--yellow);background-image:url("a/cascaron.webp");background-size:512px 512px;background-blend-mode:multiply}
+
+/* ---------- sombra leve en subtítulos y contenido ---------- */
+.wrap{text-shadow:1px 1.5px 1.5px rgba(28,22,18,.2)}
+.wrap h1,.wrap h3,.wrap h4,.fact dt,.contact-row span,.timeline .yr,.quote{text-shadow:2px 2.5px 2px rgba(28,22,18,.3)}
+.villain p,.ost-intro p{text-shadow:1px 1.5px 1.5px rgba(0,0,0,.45)}
+.villain h3,.ost-credit{text-shadow:2px 2.5px 2px rgba(0,0,0,.5)}
+/* ---------- pitch deck ---------- */
+.pitchcard{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:30px;padding:26px;align-items:center;background-color:#cfe3ea}
+.pitch-cover{display:block;transform:rotate(-3deg);box-shadow:8px 10px 0 var(--ink);border:3px solid var(--ink);transition:transform .2s}
+.pitch-cover:hover{transform:rotate(-1deg) scale(1.02)}
+.pitch-info{display:grid;gap:14px;justify-items:start;min-width:0}
+.pitch-info h3{font-size:2.4rem;margin:0}
+.pitch-info p{margin:0}
+.pitch-warn{background:#fff6dc;border:3px dashed var(--red);padding:10px 14px;font-weight:700;font-size:.95rem;max-width:56ch}
+.pitch-warn b{font-family:var(--display);font-weight:400;color:var(--red);font-size:1.2rem;letter-spacing:.04em;margin-right:4px}
+@media (max-width:700px){.pitchcard{grid-template-columns:1fr;justify-items:center}.pitch-cover{max-width:240px}}
+/* ---------- responsive ---------- */
+@media (max-width:860px){
+.features{grid-template-columns:1fr 1fr}
+  .ost-intro{grid-template-columns:1fr}
+  .story,.devstory,.end,.hero-card,.villain,.companion{grid-template-columns:1fr}
+  .tagline{grid-template-columns:1fr}
+  .timeline{grid-template-columns:1fr}
+  .timeline li{border-right:0;border-bottom:3px solid var(--ink)}
+  .timeline li:last-child{border-bottom:0}
+  .enemies{grid-template-columns:repeat(2,1fr)}
+  .anims{grid-template-columns:1fr 1fr}
+  .car-btn.prev{left:-8px}.car-btn.next{right:-8px}
+  .shot.half{grid-column:span 6}
+  .sketches{grid-template-columns:1fr 1fr}
+  .sketches .wide,.sketches .two{grid-column:span 2}
+  .hero-card .portrait{max-width:260px}
+  .veg.tree{display:none}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .features{grid-template-columns:1fr}
+  .speaker{flex-direction:column;align-items:flex-start}
+  .poses{grid-template-columns:repeat(2,1fr)}
+  .leafinfo{grid-template-columns:1fr}
+  .leafinfo img{width:84px}
+  .track{grid-template-columns:1fr;gap:10px}
+  .play{width:58px;height:58px}
+  .burst{right:-6px;top:-40px}
+  .stamp{left:-6px;top:-30px}
+  .veg.fern{left:-24px;bottom:-40px}
+  .veg.rock{right:-20px;bottom:-46px}
+  .veg.till{display:none}
+  .cover-tag{margin-top:24px}
+  .enemy .art{height:130px}
+  .enemy .art img{max-height:115px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ===================== PORTADA ===================== -->
+  <header class="cover" aria-label="Portada">
+    <div class="stamp" role="img" aria-label="Sello: Certificado 100% cebolla por Treehouse Studios">
+      <div class="stamp-paper"><div class="stamp-inner">
+        <small>Certificado</small>
+        <big>100%</big>
+        <small>Cebolla</small>
+        <img src="a/icono.webp" alt="">
+        <span class="rule"></span>
+        <small>Treehouse</small>
+        <small>Studios</small>
+      </div></div>
+    </div>
+    <div class="burst" role="note"><p>Parte de la incubadora <big>Ingenia</big>PLAYLAB</p></div>
+    <div class="cover-frame">
+      <img class="bg" src="a/keyart-capsula.webp" alt="Key art de The Amazing Cebollín: el logo sobre papel rodeado de árboles, helechos y rocas realistas">
+    </div>
+    <img class="veg fern" src="a/helecho.webp" alt="">
+    <img class="veg till" src="a/tillandsia.webp" alt="">
+    <img class="veg rock" src="a/roca.webp" alt="">
+    <div class="cover-tag">
+      <span class="caption">Una cebollita pequeña con un corazón enorme</span>
+      <span class="caption blue">Treehouse Studios · Zapopan, Jalisco</span>
+    </div>
+  </header>
+
+  <section class="tagline">
+    <h1>Platformer narrativo 2.5D de <span>acción acrobática</span>, con alma de jazz.</h1>
+    <div class="cta-row">
+      <a class="btn" href="https://cebollingame.com" target="_blank" rel="noopener">cebollingame.com</a>
+      <a class="btn alt" href="pitch/index.html">Pitch deck</a>
+      <a class="btn alt" href="#contacto">Contacto de prensa</a>
+    </div>
+  </section>
+
+  <!-- ===================== PITCH DECK ===================== -->
+  <section class="page" id="pitch" aria-labelledby="t-pitch">
+    <div class="page-head"><h2 id="t-pitch">Pitch deck</h2><span class="page-no">Especial</span></div>
+    <div class="pitchcard panel">
+      <a class="pitch-cover" href="pitch/index.html"><img src="a/pitch-portada.webp" alt="Portada del pitch deck: The Amazing Cebollín, Núm. 1"></a>
+      <div class="pitch-info">
+        <span class="caption">¡Nuevo número!</span>
+        <h3>The Amazing Cebollín, Núm. 1</h3>
+        <p>El pitch de Cebollín en forma de cómic de los 90: 14 páginas que se hojean como una revista de verdad. Historia, gameplay, arte, música, equipo y lanzamiento.</p>
+        <div class="pitch-warn" role="note"><b>¡Ojo!</b> Para una mejor experiencia, ábrelo en una computadora o un iPad. En el celular se ve una página a la vez.</div>
+        <a class="btn" href="pitch/index.html">Abrir el pitch deck</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FICHA ===================== -->
+  <section class="page" id="ficha" aria-labelledby="t-ficha">
+    <div class="page-head"><h2 id="t-ficha">Ficha técnica</h2><span class="page-no">Pág. 2</span></div>
+    <dl class="facts">
+      <div class="fact"><dt>Juego</dt><dd>Cebollín<small>Logo alterno para merch: “The Amazing Cebollín”</small></dd></div>
+      <div class="fact"><dt>Desarrollador</dt><dd>Treehouse Studios<small>Estudio independiente unipersonal</small></dd></div>
+      <div class="fact"><dt>Hecho en</dt><dd>Zapopan, Jalisco, México</dd></div>
+      <div class="fact"><dt>Lanzamiento</dt><dd>Q4 2027</dd></div>
+      <div class="fact"><dt>Plataformas</dt><dd>PC: Steam, Epic Games Store, itch.io</dd></div>
+      <div class="fact"><dt>Precio</dt><dd>$190 MXN</dd></div>
+      <div class="fact"><dt>Género</dt><dd>Plataformas · Narrativo · Acción<small>Platformer 2.5D de acción acrobática</small></dd></div>
+      <div class="fact"><dt>Motor</dt><dd>Godot (3D, perspectiva 2.5D)</dd></div>
+      <div class="fact"><dt>En desarrollo desde</dt><dd>2023</dd></div>
+      <div class="fact"><dt>Música</dt><dd>Banda sonora original de jazz y jazz fusion</dd></div>
+      <div class="fact"><dt>Sitio</dt><dd><a href="https://cebollingame.com" target="_blank" rel="noopener">cebollingame.com</a></dd></div>
+      <div class="fact"><dt>Redes</dt><dd>Instagram @cebollingame<small>Discord @Cebollin.GD · YouTube: Cebollin Game Channel</small></dd></div>
+    </dl>
+  </section>
+
+  <!-- ===================== HISTORIA ===================== -->
+  <section class="page" id="historia" aria-labelledby="t-historia">
+    <div class="page-head"><h2 id="t-historia">La historia</h2><span class="page-no">Pág. 3</span></div>
+    <div class="story">
+      <article class="panel">
+        <span class="caption">Mientras tanto, en el bosque…</span>
+        <p>El <strong>Dr. Rabadín</strong>, un inventor y científico, intentó usar los frutos del bosque como fuente de energía. Pero en este mundo las bayas son como animales para sus habitantes. Sus proyectos fueron confiscados y lo exiliaron de por vida.</p>
+        <p>Lleno de rencor, el Dr. Rabadín libera una <strong>plaga mutante</strong> que, sin querer, se extiende a las zonas cercanas. Infecta a los aldeanos y a los depredadores que comen las frutas contaminadas.</p>
+        <p>Ahí entra <strong>Cebollín</strong>: una cebollita más chica de lo normal, distraída pero muy pensativa, con un corazón fuerte y una creatividad enorme. Zona por zona, viaja por su mundo para detener la plaga. En cada lugar lo acompaña y guía un personaje de la zona, y cada viaje termina con un clímax: el enfrentamiento contra el animal infectado que domina esa región.</p>
+        <p>Cada zona es un camino del héroe completo, con momentos cómicos, melancólicos e inspiradores.</p>
+        <div class="speaker">
+          <img src="a/pose-sorpresa.webp" alt="Cebollín sorprendido">
+          <div class="bubble">Ser diferente no es malo… ¡es otra forma de ver la vida!</div>
+        </div>
+      </article>
+      <div class="story-art">
+        <figure class="panel" style="margin:0"><img src="a/keyart-sendero.webp" alt="Key art: logo de Cebollín sobre un sendero de bosque"></figure>
+        <div class="panel halftone" style="padding:20px;background-color:#f6e7c4;--dot:rgba(196,42,28,.2)">
+          <h3>El tema</h3>
+          <p style="margin:0">Cebollín es un símbolo de que el progreso en la vida es todo menos lineal, y de que la disciplina y la terquedad frente a la oposición son clave para triunfar. Lo que te hace diferente no es un defecto: es tu forma especial de interpretar el mundo y actuar en él.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CAPTURAS ===================== -->
+  <section class="page" id="capturas" aria-labelledby="t-capturas">
+    <div class="page-head"><h2 id="t-capturas">Capturas</h2><span class="page-no">Pág. 4</span></div>
+    <div class="shots">
+      <figure class="shot big"><img src="a/shot-helecho.webp" alt="Cebollín entre helechos y musgo junto a una flor azul"><figcaption class="caption">Personajes 2D en un bosque hiperrealista</figcaption></figure>
+      <figure class="shot half"><img src="a/shot-cueva.webp" alt="Cebollín en una cueva iluminada por luciérnagas"><figcaption class="caption">La cueva de las luciérnagas</figcaption></figure>
+      <figure class="shot half"><img src="a/shot-tronco.webp" alt="Cebollín bajo un tronco caído sobre tierra rojiza"><figcaption class="caption">Escala de cebolla: el mundo a ras de suelo</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ===================== EN MOVIMIENTO ===================== -->
+  <section class="page" id="animacion" aria-labelledby="t-anim">
+    <div class="page-head"><h2 id="t-anim">En movimiento</h2><span class="page-no">Pág. 5</span></div>
+    <div class="panel leafinfo">
+      <img src="a/pose-helice.webp" alt="Cebollín usando sus hojas como hélice">
+      <div>
+        <span class="caption">Las hojas son su vida</span>
+        <p>La salud de Cebollín se ve directamente en su cabeza: la cantidad de hojas que tiene es su vida. Cada golpe le cuesta hojas, y sin ellas hay movimientos que ya no puede hacer. Cuidar tus hojas también es cuidar tu repertorio acrobático.</p>
+      </div>
+    </div>
+    <div class="anims">
+      <figure class="anim"><video src="v/cebollin-vuelo.mp4" autoplay muted loop playsinline aria-label="Cebollín volando con su hoja de hélice"></video><span class="sfx">¡Fwip!</span><figcaption class="caption">Planeo con hélice</figcaption></figure>
+      <figure class="anim"><video src="v/cebollin-carrera.mp4" autoplay muted loop playsinline aria-label="Cebollín corriendo y atacando"></video><span class="sfx">¡Zas!</span><figcaption class="caption">Carrera y ataque</figcaption></figure>
+      <figure class="anim"><video src="v/cebollin-caminata.mp4" autoplay muted loop playsinline aria-label="Cebollín en reposo (idle)"></video><span class="sfx">Mmm…</span><figcaption class="caption">Idle</figcaption></figure>
+      <figure class="anim"><video src="v/cebollin-caminata-2.mp4" autoplay muted loop playsinline aria-label="Cebollín caminando"></video><span class="sfx">Tap tap</span><figcaption class="caption">Caminata</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ===================== CARACTERÍSTICAS ===================== -->
+  <section class="page" id="caracteristicas" aria-labelledby="t-feat">
+    <div class="page-head"><h2 id="t-feat">Características</h2><span class="page-no">Pág. 6</span></div>
+    <div class="features">
+      <div class="panel feature"><h3>Gamefeel acrobático</h3><p>Movimiento ágil y muy satisfactorio, afinado para que cada salto y cada combo de plataformas se sienta preciso.</p></div>
+      <div class="panel feature"><h3>Identidad visual realista</h3><p>Entornos naturales hiperrealistas en 3D combinados con personajes animados a mano en 2D.</p></div>
+      <div class="panel feature"><h3>Un mundo diseñado con ciencia</h3><p>Cada zona parte de la observación de ecosistemas reales: plantas, suelos, luz y criaturas que cuentan su propia historia.</p></div>
+      <div class="panel feature"><h3>Jazz en cada zona</h3><p>Banda sonora original de jazz y jazz fusion, con instrumentos y elementos distintos en cada región.</p></div>
+      <div class="panel feature"><h3>Personajes entrañables</h3><p>Un compañero guía por zona, un villano con motivos propios y una animación 2D fluida, cuadro por cuadro.</p></div>
+      <div class="panel feature"><h3>Jefes infectados</h3><p>Cada zona culmina con un combate contra un depredador mutado por la plaga del Dr. Rabadín.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== PERSONAJES ===================== -->
+  <section class="page" id="personajes" aria-labelledby="t-pers">
+    <div class="page-head"><h2 id="t-pers">El reparto</h2><span class="page-no">Pág. 7</span></div>
+
+    <article class="panel hero-card">
+      <div>
+        <div class="portrait halftone"><img src="a/icono.webp" alt="Arte de Cebollín"></div>
+        <div class="poses">
+          <img src="a/pose-helice.webp" alt="Cebollín con hoja de hélice">
+          <img src="a/pose-sorpresa.webp" alt="Cebollín sorprendido">
+          <img src="a/pose-lado.webp" alt="Cebollín de perfil">
+          <img src="a/pose-enojo.webp" alt="Cebollín enojado">
+        </div>
+      </div>
+      <div>
+        <span class="caption">El héroe</span>
+        <h3 style="font-size:2.6rem;margin-top:.3em">Cebollín</h3>
+        <p>Una cebollita más pequeña de lo normal. Es distraído pero muy pensativo, tiene un corazón fuerte y es extremadamente creativo. Nació como el primer personaje de su creador y terminó siendo su reflejo.</p>
+        <p style="margin:0">Sus hojas son su herramienta: se vuelven hélice para planear y puños para pelear.</p>
+      </div>
+    </article>
+
+    <article class="panel villain">
+      <div>
+        <span class="caption">El villano</span>
+        <h3 style="font-size:2.6rem;margin-top:.3em">Dr. Rabadín</h3>
+        <p>Inventor y científico exiliado de por vida por intentar convertir las bayas del bosque en energía. Su venganza, una plaga mutante, se le salió de las manos y ahora amenaza a todas las zonas.</p>
+      </div>
+      <div class="mystery" aria-label="Arte del Dr. Rabadín próximamente"><div><b>?</b>Arte próximamente</div></div>
+    </article>
+
+    <h3 style="margin-top:40px;font-size:2rem">La plaga mutante</h3>
+    <div class="enemies">
+      <figure class="enemy"><div class="art halftone"><img src="a/fresarana.webp" alt="Fresaraña"></div><h4>Fresaraña</h4><small>Fresa</small></figure>
+      <figure class="enemy"><div class="art halftone"><img src="a/mora-pulgona.webp" alt="Mora-pulgona"></div><h4>Mora-pulgona</h4><small>Mora azul</small></figure>
+      <figure class="enemy"><div class="art halftone"><img src="a/explotamora.webp" alt="Explotamora"></div><h4>Explotamora</h4><small>Zarzamora</small></figure>
+      <figure class="enemy"><div class="art halftone"><img src="a/frambeja.webp" alt="Frambeja"></div><h4>Frambeja</h4><small>Frambuesa</small></figure>
+    </div>
+
+    <article class="panel companion">
+      <div>
+        <span class="caption">Concepto de jefe</span>
+        <h3 style="font-size:2.2rem;margin-top:.3em">Lily Tlacuache</h3>
+        <p style="margin:0">Uno de los depredadores que la plaga del Dr. Rabadín convierte en jefe de zona. Estos bocetos a lápiz exploran sus poses, ataques y planos de cámara para el combate.</p>
+      </div>
+      <img src="a/boceto-lily.webp" alt="Bocetos a lápiz de Lily Tlacuache, concepto de jefe, en varias poses">
+    </article>
+  </section>
+
+  <!-- ===================== DIRECCIÓN DE ARTE ===================== -->
+  <section class="page" id="arte" aria-labelledby="t-arte">
+    <div class="page-head"><h2 id="t-arte">Dirección de arte</h2><span class="page-no">Pág. 8</span></div>
+    <div class="artdir">
+      <div>
+        <p>Los entornos naturales tienen una belleza y un sentimiento que Cebollín quiere transmitir. Por eso el juego combina <strong>animación 2D tradicional</strong> con <strong>escenarios 3D hiperrealistas</strong>: un personaje de caricatura, pequeño y expresivo, perdido en un mundo que se siente de verdad.</p>
+        <p>Cada zona parte de fotografía de campo. De cada foto se extrae una paleta de color que define la luz, el suelo y la vegetación del nivel.</p>
+        <p><span class="note">Fotografía: Pablo Saúl González (@ps.ictures)</span></p>
+      </div>
+      <div class="carousel" aria-roledescription="carrusel" aria-label="Moodboards de color">
+      <button class="car-btn prev" type="button" aria-label="Anterior">‹</button>
+      <button class="car-btn next" type="button" aria-label="Siguiente">›</button>
+      <div class="moods" tabindex="0">
+        <figure><img src="a/mood-1.webp" alt="Moodboard: brote verde sobre tierra con paleta de verdes y cafés"></figure>
+        <figure><img src="a/mood-2.webp" alt="Moodboard: flor blanca bajo la luna con paleta de azules nocturnos"></figure>
+        <figure><img src="a/mood-3.webp" alt="Moodboard: hoja seca sobre raíces con paleta de verdes oscuros"></figure>
+      </div>
+      <div class="car-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BANDA SONORA ===================== -->
+  <section class="page" id="musica" aria-labelledby="t-ost">
+    <div class="page-head"><h2 id="t-ost">Banda sonora</h2><span class="page-no">Pág. 9</span></div>
+    <div class="ost halftone">
+      <div class="ost-intro">
+        <p>El jazz y el jazz fusion son la gran pasión musical detrás de Cebollín. Cada zona del mundo tiene su propio sabor de jazz, con instrumentos y elementos distintos, en una banda sonora original. Dale play para escuchar dos adelantos.</p>
+        <span class="sfx" aria-hidden="true">¡Swing!</span>
+      </div>
+      <div class="tracks">
+        <article class="track" data-src="m/valle-verdura.mp3" data-peaks="[0.17, 0.18, 0.15, 0.14, 0.17, 0.21, 0.15, 0.15, 0.15, 0.67, 0.56, 0.34, 0.58, 0.57, 0.64, 0.42, 0.4, 0.4, 0.86, 0.75, 0.58, 0.68, 0.7, 0.77, 0.77, 0.68, 0.73, 0.67, 0.68, 0.65, 0.62, 0.58, 0.68, 0.86, 0.68, 0.66, 0.56, 0.75, 0.7, 0.46, 0.46, 0.64, 0.59, 0.7, 0.68, 0.66, 0.6, 0.37, 1.0, 0.77, 0.82, 0.76, 0.71, 0.77, 0.85, 0.83, 0.68, 0.83, 0.87, 0.68, 0.78, 0.74, 0.9, 0.93, 0.83, 0.8, 0.65, 0.35, 0.24, 0.32, 0.24, 0.21, 0.31, 0.27, 0.22, 0.23, 0.19, 0.22, 0.22, 0.24, 0.2, 0.26, 0.19, 0.22, 0.27, 0.24, 0.24, 0.26, 0.27, 0.24, 0.24, 0.27, 0.25, 0.25, 0.24, 0.28]">
+          <button class="play" type="button" aria-label="Reproducir Valle Verdura"></button>
+          <div class="track-info">
+            <div class="track-top"><h3>Valle Verdura</h3><span class="time">0:00 / 2:55</span></div>
+            <div class="track-meta">Tema de zona</div>
+            <div class="wave" role="slider" tabindex="0" aria-label="Posición en Valle Verdura" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+          </div>
+        </article>
+        <article class="track" data-src="m/combate-jazz.mp3" data-peaks="[0.61, 0.55, 0.57, 0.39, 0.64, 0.62, 0.54, 0.67, 0.64, 0.58, 0.6, 0.81, 0.79, 0.63, 0.73, 0.65, 0.79, 0.71, 0.46, 0.44, 0.57, 0.56, 0.51, 0.49, 0.68, 0.61, 0.44, 0.65, 0.5, 0.57, 1.0, 0.5, 0.63, 0.68, 0.53, 0.45, 0.49, 0.68, 0.61, 0.45, 0.65, 0.49, 0.48, 0.61, 0.43, 0.45, 0.41, 0.41, 0.39, 0.42, 0.43, 0.4, 0.44, 0.42, 0.39, 0.42, 0.62, 0.52, 0.45, 0.54, 0.56, 0.49, 0.53, 0.63, 0.41, 0.45, 0.64, 0.67, 0.76, 0.61, 0.46, 0.37, 0.5, 0.46, 0.31, 0.36, 0.6, 0.38, 0.38, 0.6, 0.32, 0.37, 0.5, 0.52, 0.38, 0.5, 0.47, 0.37, 0.38, 0.6, 0.36, 0.37, 0.59, 0.57, 0.72, 0.72]">
+          <button class="play" type="button" aria-label="Reproducir Combate Jazz"></button>
+          <div class="track-info">
+            <div class="track-top"><h3>Combate Jazz</h3><span class="time">0:00 / 1:30</span></div>
+            <div class="track-meta">Tema de combate</div>
+            <div class="wave" role="slider" tabindex="0" aria-label="Posición en Combate Jazz" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+          </div>
+        </article>
+      </div>
+      <p class="ost-credit">Música y SFX: Fernando Sainz Parada</p>
+    </div>
+  </section>
+
+  <!-- ===================== BOCETOS ===================== -->
+  <section class="page" id="bocetos" aria-labelledby="t-boc">
+    <div class="page-head"><h2 id="t-boc">Del cuaderno</h2><span class="page-no">Pág. 10</span></div>
+    <div class="sketches">
+      <figure><img src="a/boceto-1.webp" alt="Primer boceto a lápiz de Cebollín sonriendo"></figure>
+      <figure><img src="a/boceto-2.webp" alt="Boceto a lápiz de Cebollín con ojos grandes"></figure>
+      <figure><img src="a/boceto-3.webp" alt="Boceto a lápiz de Cebollín de espaldas"></figure>
+      <figure class="wide"><img src="a/boceto-nombres.webp" alt="Bocetos de los enemigos con sus nombres"></figure>
+      <figure class="wide"><img src="a/boceto-enemigos.webp" alt="Exploración de diseños de enemigos junto a fotos de referencia de fresa, mora azul, zarzamora y frambuesa"></figure>
+    </div>
+  </section>
+
+  <!-- ===================== DESARROLLO ===================== -->
+  <section class="page" id="desarrollo" aria-labelledby="t-dev">
+    <div class="page-head"><h2 id="t-dev">Origen secreto</h2><span class="page-no">Pág. 11</span></div>
+    <ol class="timeline">
+      <li><span class="yr">2023</span><b>Unity 2D</b><p>Arranca como proyecto para aprender gamedev.</p></li>
+      <li><span class="yr">2025</span><b>Godot 2D</b><p>El proyecto migra a Godot.</p></li>
+      <li><span class="yr">2026</span><b>Godot 3D</b><p>Salto a 3D para la perspectiva 2.5D.</p></li>
+      <li><span class="yr">2026</span><b>Ingenia Zapopan</b><p>Seleccionado entre 25 de 400 proyectos del país.</p></li>
+      <li><span class="yr">Q4 2027</span><b>Lanzamiento</b><p>Steam, Epic Games Store e itch.io.</p></li>
+    </ol>
+    <div class="devstory">
+      <article class="panel">
+        <p class="quote">“Descubrí que me gustaba mucho animar y crear personajes. Cebollín se volvió un reflejo de mí.”</p>
+        <p>Pablo Saúl González García empezó Cebollín en 2023 como un proyecto de iniciación en el desarrollo de videojuegos. Aprendió todo por su cuenta y de forma autodidacta. En el camino descubrió su pasión por la animación y el diseño de personajes.</p>
+        <p style="margin:0">En 2026 el proyecto entró a la incubadora de <strong>Ingenia Zapopan</strong>, donde quedó entre los 25 proyectos seleccionados de 400 aplicantes de todo el país para avanzar a la fase final. Ahí Pablo se formó profesionalmente en diseño de juego, planeación y gestión de proyectos, y sumó al equipo a un productor musical para la banda sonora.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== DESCARGAS ===================== -->
+  <section class="page" id="descargas" aria-labelledby="t-dl">
+    <div class="page-head"><h2 id="t-dl">Kit de descargas</h2><span class="page-no">Pág. 12</span></div>
+    <div class="dl-all panel halftone">
+      <div>
+        <h3>Todo el material en un ZIP</h3>
+        <p>Logos, sellos, key art, capturas, poses, enemigos, bocetos, moodboards, animaciones y música, en su resolución original.</p>
+      </div>
+      <div class="dl-all-actions">
+        <button class="btn" type="button" id="dl-all">Descargar todo</button>
+        <span class="dl-status" id="dl-status" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+    <h3 class="dl-group">Logos y sellos</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb halftone dark"><img src="a/logo.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Logo oficial</b><small>PNG · 1459×603</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-logo.png" data-name="cebollin-logo.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone dark"><img src="a/logo-amazing.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Logo The Amazing Cebollín (merch)</b><small>PNG · 1459×641</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-logo-amazing.png" data-name="cebollin-logo-amazing.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/icono.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Ícono de Cebollín</b><small>PNG · 535×751</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-icono.png" data-name="cebollin-icono.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/sello-color.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Sello Certificado 100% Cebolla, color</b><small>PNG · 1120×1638</small></div><button class="dl-btn" type="button" data-src="orig/sello-certificado-100-cebolla-color.png" data-name="sello-certificado-100-cebolla-color.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/sello-bn.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Sello Certificado 100% Cebolla, blanco y negro</b><small>PNG · 1120×1638</small></div><button class="dl-btn" type="button" data-src="orig/sello-certificado-100-cebolla-bn.png" data-name="sello-certificado-100-cebolla-bn.png">Descargar</button></div></div>
+    </div>
+    <h3 class="dl-group">Key art y capturas</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb"><img class="fill" src="a/keyart-capsula.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Key art · cápsula</b><small>PNG · 1232×706</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-keyart-capsula.png" data-name="cebollin-keyart-capsula.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb"><img class="fill" src="a/keyart-sendero.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Key art · sendero</b><small>PNG · 1755×1171</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-keyart-sendero.png" data-name="cebollin-keyart-sendero.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb"><img class="fill" src="a/shot-helecho.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Captura · helechos</b><small>PNG · 1920×1080</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-captura-helecho.png" data-name="cebollin-captura-helecho.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb"><img class="fill" src="a/shot-cueva.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Captura · cueva</b><small>PNG · 1920×1080</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-captura-cueva.png" data-name="cebollin-captura-cueva.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb"><img class="fill" src="a/shot-tronco.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Captura · tronco</b><small>PNG · 1920×1080</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-captura-tronco.png" data-name="cebollin-captura-tronco.png">Descargar</button></div></div>
+    </div>
+    <h3 class="dl-group">Cebollín</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb halftone"><img src="a/pose-helice.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Pose · hélice</b><small>PNG · 512×512</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-pose-helice.png" data-name="cebollin-pose-helice.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/pose-sorpresa.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Pose · sorpresa</b><small>PNG · 512×512</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-pose-sorpresa.png" data-name="cebollin-pose-sorpresa.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/pose-lado.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Pose · de perfil</b><small>PNG · 512×512</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-pose-lado.png" data-name="cebollin-pose-lado.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/pose-enojo.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Pose · enojado</b><small>PNG · 512×512</small></div><button class="dl-btn" type="button" data-src="orig/cebollin-pose-enojo.png" data-name="cebollin-pose-enojo.png">Descargar</button></div></div>
+    </div>
+    <h3 class="dl-group">Animaciones</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb dark"><video src="v/cebollin-vuelo.mp4" muted loop autoplay playsinline preload="metadata"></video></div><div class="meta"><div><b>Planeo con hélice</b><small>MP4 · 245 KB</small></div><button class="dl-btn" type="button" data-src="v/cebollin-vuelo.mp4" data-name="cebollin-vuelo.mp4">Descargar</button></div></div>
+      <div class="dl"><div class="thumb dark"><video src="v/cebollin-carrera.mp4" muted loop autoplay playsinline preload="metadata"></video></div><div class="meta"><div><b>Carrera y ataque</b><small>MP4 · 689 KB</small></div><button class="dl-btn" type="button" data-src="v/cebollin-carrera.mp4" data-name="cebollin-carrera.mp4">Descargar</button></div></div>
+      <div class="dl"><div class="thumb dark"><video src="v/cebollin-caminata.mp4" muted loop autoplay playsinline preload="metadata"></video></div><div class="meta"><div><b>Idle</b><small>MP4 · 77 KB</small></div><button class="dl-btn" type="button" data-src="v/cebollin-caminata.mp4" data-name="cebollin-idle.mp4">Descargar</button></div></div>
+      <div class="dl"><div class="thumb dark"><video src="v/cebollin-caminata-2.mp4" muted loop autoplay playsinline preload="metadata"></video></div><div class="meta"><div><b>Caminata</b><small>MP4 · 34 KB</small></div><button class="dl-btn" type="button" data-src="v/cebollin-caminata-2.mp4" data-name="cebollin-caminata.mp4">Descargar</button></div></div>
+    </div>
+    <h3 class="dl-group">La plaga mutante</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb halftone"><img src="a/fresarana.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Fresaraña</b><small>PNG · 328×364</small></div><button class="dl-btn" type="button" data-src="orig/enemigo-fresarana.png" data-name="enemigo-fresarana.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/mora-pulgona.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Mora-pulgona</b><small>PNG · 275×304</small></div><button class="dl-btn" type="button" data-src="orig/enemigo-mora-pulgona.png" data-name="enemigo-mora-pulgona.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/explotamora.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Explotamora</b><small>PNG · 219×290</small></div><button class="dl-btn" type="button" data-src="orig/enemigo-explotamora.png" data-name="enemigo-explotamora.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/frambeja.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Frambeja</b><small>PNG · 244×522</small></div><button class="dl-btn" type="button" data-src="orig/enemigo-frambeja.png" data-name="enemigo-frambeja.png">Descargar</button></div></div>
+    </div>
+    <h3 class="dl-group">Bocetos</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb"><img class="fill" src="a/boceto-1.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Boceto de Cebollín 1</b><small>PNG · 728×608</small></div><button class="dl-btn" type="button" data-src="orig/boceto-cebollin-1.png" data-name="boceto-cebollin-1.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb"><img class="fill" src="a/boceto-2.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Boceto de Cebollín 2</b><small>PNG · 728×564</small></div><button class="dl-btn" type="button" data-src="orig/boceto-cebollin-2.png" data-name="boceto-cebollin-2.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb"><img class="fill" src="a/boceto-3.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Boceto de Cebollín 3</b><small>PNG · 728×564</small></div><button class="dl-btn" type="button" data-src="orig/boceto-cebollin-3.png" data-name="boceto-cebollin-3.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/boceto-nombres.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Enemigos con nombre</b><small>PNG · 1116×274</small></div><button class="dl-btn" type="button" data-src="orig/boceto-enemigos-nombres.png" data-name="boceto-enemigos-nombres.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/boceto-enemigos.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Exploración de enemigos</b><small>PNG · 1026×609</small></div><button class="dl-btn" type="button" data-src="orig/boceto-enemigos-exploracion.png" data-name="boceto-enemigos-exploracion.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/boceto-lily.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Lily Tlacuache (jefe)</b><small>PNG · 795×578</small></div><button class="dl-btn" type="button" data-src="orig/boceto-lily-tlacuache.png" data-name="boceto-lily-tlacuache.png">Descargar</button></div></div>
+    </div>
+    <h3 class="dl-group">Dirección de arte</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb halftone"><img src="a/mood-1.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Moodboard 1</b><small>PNG · 1005×530</small></div><button class="dl-btn" type="button" data-src="orig/moodboard-1.png" data-name="moodboard-1.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/mood-2.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Moodboard 2</b><small>PNG · 901×552</small></div><button class="dl-btn" type="button" data-src="orig/moodboard-2.png" data-name="moodboard-2.png">Descargar</button></div></div>
+      <div class="dl"><div class="thumb halftone"><img src="a/mood-3.webp" alt="" loading="lazy"></div><div class="meta"><div><b>Moodboard 3</b><small>PNG · 835×534</small></div><button class="dl-btn" type="button" data-src="orig/moodboard-3.png" data-name="moodboard-3.png">Descargar</button></div></div>
+    </div>
+    <h3 class="dl-group">Música</h3>
+    <div class="downloads">
+      <div class="dl"><div class="thumb music"><span class="sfx" aria-hidden="true">♪♫</span></div><div class="meta"><div><b>Valle Verdura</b><small>MP3 · 6.7 MB</small></div><button class="dl-btn" type="button" data-src="m/valle-verdura.mp3" data-name="valle-verdura.mp3">Descargar</button></div></div>
+      <div class="dl"><div class="thumb music"><span class="sfx" aria-hidden="true">♪♫</span></div><div class="meta"><div><b>Combate Jazz</b><small>MP3 · 3.4 MB</small></div><button class="dl-btn" type="button" data-src="m/combate-jazz.mp3" data-name="combate-jazz.mp3">Descargar</button></div></div>
+    </div>
+  </section>
+
+  <!-- ===================== CRÉDITOS Y CONTACTO ===================== -->
+  <section class="page" id="contacto" aria-labelledby="t-end">
+    <div class="page-head"><h2 id="t-end">Créditos y contacto</h2><span class="page-no">Pág. 13</span></div>
+    <div class="end">
+      <div class="panel credits">
+        <h3>Equipo</h3>
+        <dl>
+          <div><dt>Pablo Saúl González García</dt><dd>Creador y director. Dirección creativa, programación, animación, visuales 3D, ambientación, concept art, diseño de niveles y worldbuilding. Originario de Xalapa, Veracruz.</dd></div>
+          <div><dt>Frida Jimena Espinosa Velázquez</dt><dd>Animación 2D</dd></div>
+          <div><dt>Jackeline Cuevas Sánchez</dt><dd>Animación 2D</dd></div>
+          <div><dt>Fernando Sainz Parada</dt><dd>Producción musical y SFX</dd></div>
+        </dl>
+      </div>
+      <div class="panel contact halftone">
+        <h3>Prensa y creadores</h3>
+        <div class="contact-row"><div><span>Correo</span><strong id="c-mail">pablosaul2312@gmail.com</strong></div><button class="copy" type="button" data-copy="c-mail">Copiar</button></div>
+        <div class="contact-row"><div><span>Teléfono / WhatsApp</span><strong id="c-tel">228 851 6838</strong></div><button class="copy" type="button" data-copy="c-tel">Copiar</button></div>
+        <div class="socials">
+          <a href="https://cebollingame.com" target="_blank" rel="noopener">cebollingame.com</a>
+          <a href="https://www.instagram.com/cebollingame/" target="_blank" rel="noopener">Instagram @cebollingame</a>
+          <a href="https://www.youtube.com/results?search_query=Cebollin+Game+Channel" target="_blank" rel="noopener">YouTube: Cebollin Game Channel</a>
+          <span class="socials-plain" style="font-weight:700;background:var(--paper);border:2px solid var(--ink);padding:.3em .7em;box-shadow:2px 2px 0 var(--ink)">Discord @Cebollin.GD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <img src="a/logo-amazing.webp" alt="The Amazing Cebollín">
+    <p style="margin:0 auto">© 2026 Treehouse Studios. Cebollín y sus personajes son propiedad de Pablo Saúl González García.</p>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy), t=el.textContent.replace(/\s/g, b.dataset.copy==='c-tel'?'':' ').trim();
+    var done=function(){b.textContent='¡Copiado!';setTimeout(function(){b.textContent='Copiar'},1600)};
+    var fallback=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Seleccionado';setTimeout(function(){b.textContent='Copiar'},1600)};
+    try{navigator.clipboard.writeText(t).then(done,fallback)}catch(e){fallback()}
+  });
+});
+(function(){
+  var c=document.querySelector('.carousel'); if(!c) return;
+  var track=c.querySelector('.moods'), slides=track.children, dots=c.querySelector('.car-dots'), cur=0;
+  for(var k=0;k<slides.length;k++){(function(k){var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Moodboard '+(k+1));d.addEventListener('click',function(){go(k)});dots.appendChild(d)})(k)}
+  function go(k){cur=(k+slides.length)%slides.length;track.scrollTo({left:slides[cur].offsetLeft-track.offsetLeft,behavior:'smooth'});mark()}
+  function mark(){[].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===cur?'true':'false')})}
+  track.addEventListener('scroll',function(){var i=Math.round(track.scrollLeft/track.clientWidth);if(i!==cur){cur=i;mark()}});
+  c.querySelector('.prev').addEventListener('click',function(){go(cur-1)});
+  c.querySelector('.next').addEventListener('click',function(){go(cur+1)});
+  track.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();go(cur+1)}if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}});
+  mark();
+})();
+(function(){
+  var PLAY='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l15 9-15 9z"/></svg>', PAUSE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h5v18H5zM14 3h5v18h-5z"/></svg>';
+  var tracks=[].slice.call(document.querySelectorAll('.track')), audio=new Audio(), current=null;
+  audio.preload='none';
+  function fmt(t){t=Math.max(0,Math.floor(t||0));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')}
+  tracks.forEach(function(tr){
+    var peaks=JSON.parse(tr.dataset.peaks), w=tr.querySelector('.wave');
+    peaks.forEach(function(v){var b=document.createElement('span');b.style.height=Math.round(v*100)+'%';w.appendChild(b)});
+    var btn=tr.querySelector('.play'); btn.innerHTML=PLAY;
+    tr._total=tr.querySelector('.time').textContent.split('/ ')[1];
+    btn.addEventListener('click',function(){
+      if(current===tr){ if(audio.paused) audio.play().catch(function(){}); else audio.pause(); return; }
+      select(tr,0);
+    });
+    function seekFrom(e){var r=w.getBoundingClientRect();var f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
+      if(current!==tr){select(tr,f)}else if(audio.duration){audio.currentTime=f*audio.duration}}
+    w.addEventListener('pointerdown',seekFrom);
+    w.addEventListener('keydown',function(e){if(current!==tr||!audio.duration)return;
+      if(e.key==='ArrowRight'){e.preventDefault();audio.currentTime=Math.min(audio.duration,audio.currentTime+5)}
+      if(e.key==='ArrowLeft'){e.preventDefault();audio.currentTime=Math.max(0,audio.currentTime-5)}});
+  });
+  function select(tr,frac){
+    if(current){current.classList.remove('playing');current.querySelector('.play').innerHTML=PLAY;paint(current,0);current.querySelector('.time').textContent='0:00 / '+current._total}
+    current=tr; audio.src=tr.dataset.src;
+    audio.addEventListener('loadedmetadata',function once(){audio.removeEventListener('loadedmetadata',once);if(frac)audio.currentTime=frac*audio.duration},{once:true});
+    audio.play().catch(function(){});
+  }
+  function paint(tr,f){var bars=tr.querySelectorAll('.wave span'),n=Math.round(f*bars.length);for(var i=0;i<bars.length;i++)bars[i].classList.toggle('on',i<n);tr.querySelector('.wave').setAttribute('aria-valuenow',Math.round(f*100))}
+  audio.addEventListener('play',function(){if(current){current.classList.add('playing');current.querySelector('.play').innerHTML=PAUSE;current.querySelector('.play').setAttribute('aria-label','Pausar '+current.querySelector('h3').textContent)}});
+  audio.addEventListener('pause',function(){if(current){current.classList.remove('playing');current.querySelector('.play').innerHTML=PLAY;current.querySelector('.play').setAttribute('aria-label','Reproducir '+current.querySelector('h3').textContent)}});
+  audio.addEventListener('timeupdate',function(){if(!current||!audio.duration)return;paint(current,audio.currentTime/audio.duration);current.querySelector('.time').textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)});
+  audio.addEventListener('ended',function(){paint(current,0)});
+})();
+(function(){
+  var dlCap=null, capReady=(window.claude&&window.claude.use)?window.claude.use("downloads").then(function(d){dlCap=d;return d},function(){return null}):Promise.resolve(null);
+  var toastEl=null,toastT;
+  function toast(msg){if(!toastEl){toastEl=document.createElement('div');toastEl.className='toast';toastEl.setAttribute('role','status');document.body.appendChild(toastEl)}toastEl.textContent=msg;toastEl.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){toastEl.hidden=true},3200)}
+  function anchorSave(href,name){var a=document.createElement('a');a.href=href;a.download=name;document.body.appendChild(a);a.click();a.remove()}
+  function errMsg(e){var c=e&&e.code;
+    if(c==='declined')return 'Descarga cancelada.';
+    if(c==='rejected_extension'||c==='extension_not_enabled')return 'Este formato no se puede descargar aquí. Usa “Descargar todo”.';
+    if(c==='rate_limited')return 'Ya hay una descarga pendiente. Confírmala primero.';
+    return 'No se pudo descargar. Intenta de nuevo.'}
+  async function saveBlob(blob,name,fallbackHref){
+    var d=dlCap||await Promise.race([capReady,new Promise(function(r){setTimeout(function(){r(null)},1500)})]);
+    if(d){await d.save({filename:name,data:blob});return}
+    var url=fallbackHref||URL.createObjectURL(blob);anchorSave(url,name);if(!fallbackHref)setTimeout(function(){URL.revokeObjectURL(url)},10000)}
+  document.querySelectorAll('.dl-btn').forEach(function(b){
+    b.addEventListener('click',async function(){
+      var src=b.dataset.src,name=b.dataset.name;b.disabled=true;var t=b.textContent;b.textContent='…';
+      try{
+        var d=dlCap||await Promise.race([capReady,new Promise(function(r){setTimeout(function(){r(null)},1500)})]);
+        if(d){var res=await fetch(src);if(!res.ok)throw new Error('fetch');await d.save({filename:name,data:await res.blob()});toast('Listo: '+name)}
+        else anchorSave(src,name);
+      }catch(e){toast(errMsg(e))}
+      b.disabled=false;b.textContent=t;
+    });
+  });
+  var all=document.getElementById('dl-all'),st=document.getElementById('dl-status');
+  if(all)all.addEventListener('click',async function(){
+    all.disabled=true;
+    try{
+      if(!window.JSZip)throw new Error('nozip');
+      var btns=[].slice.call(document.querySelectorAll('.dl-btn')),zip=new JSZip(),root=zip.folder('cebollin-press-kit');
+      for(var i=0;i<btns.length;i++){
+        var b=btns[i],grp=b.closest('.downloads').previousElementSibling.textContent.trim();
+        st.textContent='Reuniendo archivos '+(i+1)+' de '+btns.length+'…';
+        var res=await fetch(b.dataset.src);if(!res.ok)throw new Error('fetch');
+        root.folder(grp).file(b.dataset.name,await res.blob());
+      }
+      st.textContent='Comprimiendo…';
+      var blob=await zip.generateAsync({type:'blob',compression:'STORE'});
+      st.textContent='';
+      await saveBlob(blob,'cebollin-press-kit.zip');
+      st.textContent='ZIP listo.';
+    }catch(e){
+      if(e&&e.code){st.textContent=errMsg(e)}
+      else{st.textContent=(location.protocol==='file:')?'“Descargar todo” funciona cuando el press kit está publicado en un sitio web. Desde un archivo local, usa los botones de cada archivo.':'No se pudo preparar el ZIP. Intenta de nuevo.'}
+    }
+    all.disabled=false;
+  });
+})();
+</script>
+
+</body>
+</html>

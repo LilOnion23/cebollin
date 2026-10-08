@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cebollín Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,700&family=Permanent+Marker&display=swap">
+<style>
+/* Layout: un cómic mexicano de los 90 sobre un escritorio de papel. Doble página en pantallas anchas,
+   una página en teléfono; cada hoja gira sobre el lomo. Solo arte propio de Treehouse Studios. */
+:root{
+  --desk:#d9c49a;
+  --paper:#f3e6c6;
+  --ink:#1c1612;
+  --red:#c42a1c;
+  --yellow:#f3b424;
+  --orange:#e8761e;
+  --green:#1d7f52;
+  --cyan:#2d6f93;
+  --display:"Bangers","Impact","Arial Black",sans-serif;
+  --body:"Comic Neue","Trebuchet MS",sans-serif;
+  --hand:"Permanent Marker","Comic Neue",cursive;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+html{background:#1e2a17 url("a/portada-bosque.webp") center/cover no-repeat fixed;min-height:100%}
+body{margin:0;background:transparent;color:var(--ink);font-family:var(--body);overflow:hidden}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(10,20,8,.05) 30%,rgba(5,10,4,.6) 100%);pointer-events:none}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px dashed var(--red);outline-offset:3px}
+
+/* ---------- escenario y libro ---------- */
+.stage{position:relative;z-index:1;height:100%;display:grid;grid-template-rows:1fr auto;justify-items:center;align-items:center;padding:14px 16px 10px;gap:10px}
+.viewport{position:relative;perspective:2600px;display:grid;place-items:center;width:100%;height:100%;min-height:0}
+.book{position:relative;transition:translate .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d;transform:rotateX(7deg)}
+.book.spread{width:calc(var(--pw)*2);height:var(--ph)}
+.book.single{width:var(--pw);height:var(--ph)}
+.book.spread.at-start{translate:calc(var(--pw)*-.5) 0}
+.book.spread.at-end{translate:calc(var(--pw)*.5) 0}
+.book.no-anim{transition:none}
+.book::before{content:"";position:absolute;inset:auto 2% -26px 2%;height:40px;background:radial-gradient(ellipse at center,rgba(0,0,0,.6),transparent 70%);filter:blur(6px);transform:translateZ(-2px)}
+.book.spread.at-start::before{left:52%}
+.book.spread.at-end::before{right:52%}
+.leaf{position:absolute;top:0;height:100%;width:var(--pw);transform-style:preserve-3d;transform-origin:left center;transition:transform .9s cubic-bezier(.45,.05,.25,1)}
+.book.spread .leaf{left:50%}
+.book.single .leaf{left:0}
+.leaf.flipped{transform:rotateY(-180deg)}
+.book.single .leaf.flipped.gone{visibility:hidden}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;container-type:size;
+  background-color:var(--paper);background-image:url("a/cascaron.webp");background-size:512px;background-blend-mode:multiply}
+.face.back{transform:rotateY(180deg)}
+.face{transition:visibility 0s linear .45s}
+.leaf.flipped>.face.front{visibility:hidden}
+.leaf:not(.flipped)>.face.back{visibility:hidden}
+.book.single .leaf.flipped.gone>.face{visibility:hidden}
+.leaf.instant>.face{transition:none}
+.face::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:30;transition:opacity .9s}
+.face.front{border-radius:0 6px 6px 0}
+.face.back{border-radius:6px 0 0 6px}
+.face.front::after{background:
+  linear-gradient(90deg,rgba(30,15,0,.55) 0%,rgba(30,15,0,.22) 2.5%,rgba(255,250,235,.16) 7%,rgba(255,250,235,0) 16%,rgba(0,0,0,0) 80%,rgba(30,15,0,.10) 96%,rgba(30,15,0,.18) 100%),
+  linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 75%,rgba(30,15,0,.10))}
+.face.back::after{background:
+  linear-gradient(270deg,rgba(30,15,0,.55) 0%,rgba(30,15,0,.22) 2.5%,rgba(255,250,235,.16) 7%,rgba(255,250,235,0) 16%,rgba(0,0,0,0) 80%,rgba(30,15,0,.10) 96%,rgba(30,15,0,.18) 100%),
+  linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 75%,rgba(30,15,0,.10))}
+.book.single .face.front::after{background:linear-gradient(90deg,rgba(30,15,0,.3),rgba(255,250,235,.12) 5%,rgba(0,0,0,0) 14%,rgba(0,0,0,0) 85%,rgba(30,15,0,.14))}
+.base{position:absolute;top:0;height:100%;width:var(--pw);background:#efe2c0;pointer-events:none;transition:opacity .3s}
+.base.r{left:50%;border-radius:0 6px 6px 0;box-shadow:1px 1px 0 #e2d3ad,2px 2px 0 #f2e6c8,3px 3px 0 #ddcca3,4px 4px 0 #f0e3c3,5px 5px 0 #d6c399,6px 6px 0 #ead9b4,7px 8px 14px rgba(0,0,0,.45)}
+.base.l{left:0;border-radius:6px 0 0 6px;box-shadow:-1px 1px 0 #e2d3ad,-2px 2px 0 #f2e6c8,-3px 3px 0 #ddcca3,-4px 4px 0 #f0e3c3,-5px 5px 0 #d6c399,-6px 6px 0 #ead9b4,-7px 8px 14px rgba(0,0,0,.45)}
+.book.single .base.l{display:none}
+.book.single .base.r{left:0}
+.base.off{opacity:0}
+.leaf.turning .face::after{background:linear-gradient(90deg,rgba(30,15,0,.45),rgba(255,250,235,.22) 18%,rgba(0,0,0,0) 45%,rgba(30,15,0,.12) 75%,rgba(30,15,0,.35));animation:sheen .9s ease-in-out}
+@keyframes sheen{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+.face.blank{background-color:#ecdcb6}
+.hot{position:absolute;bottom:0;width:13%;height:16%;z-index:20;cursor:pointer;border:0;padding:0;background:none}
+.face.front .hot{right:0}
+.face.back .hot{left:0}
+.face.front .hot::before,.face.back .hot::before{content:"";position:absolute;bottom:0;width:0;height:0;transition:border-width .2s}
+.face.front .hot::before{right:0;border-style:solid;border-width:0 0 0 0;border-color:transparent transparent #e7d4a8 transparent}
+.face.front .hot:hover::before{border-width:0 0 34px 34px;border-color:transparent transparent #e2cd9c #f7ecd2;box-shadow:-3px -3px 6px rgba(0,0,0,.15)}
+.face.back .hot::before{left:0}
+.face.back .hot:hover::before{border-width:34px 0 0 34px;border-style:solid;border-color:transparent transparent transparent #e2cd9c}
+
+/* ---------- controles ---------- */
+.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.nav{font-family:var(--display);font-size:1.25rem;letter-spacing:.04em;background:var(--yellow);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:.2em .8em;cursor:pointer}
+.nav:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.nav[disabled]{opacity:.45;cursor:default}
+.counter{font-family:var(--display);font-size:1.2rem;letter-spacing:.05em;background:var(--ink);color:var(--paper);padding:.25em .8em;min-width:9.5em;text-align:center;font-variant-numeric:tabular-nums}
+.hint{font-size:.85rem;font-weight:700;color:#f3e6c6;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+@media (max-width:640px){.hint{display:none}.nav{font-size:1.05rem}.counter{font-size:1rem;min-width:7.5em}}
+
+/* =========================================================
+   CONTENIDO DE PÁGINAS — unidades cqw/cqh relativas a la página
+   ========================================================= */
+.pg{position:absolute;inset:0;padding:5cqw 5cqw 7.5cqw;display:flex;flex-direction:column;gap:2.6cqw;font-size:3.05cqw;line-height:1.38}
+.pg p{margin:0}
+.folio{position:absolute;bottom:2.2cqw;font-family:var(--display);font-size:3cqw;letter-spacing:.05em}
+.face.front .folio{right:15cqw}
+.face.back .folio{left:15cqw}
+.book.single .face .folio{right:15cqw;left:auto}
+.pg-title{font-family:var(--display);font-weight:400;font-size:9.5cqw;line-height:.9;margin:0;letter-spacing:.02em;color:var(--ink);text-shadow:.5cqw .5cqw 0 var(--yellow),1cqw 1cqw 0 var(--red)}
+.kicker{align-self:flex-start;background:var(--red);color:#fffaf0;font-family:var(--display);font-size:3.3cqw;letter-spacing:.06em;padding:.4cqw 2cqw;transform:rotate(-1.5deg);border:.6cqw solid var(--ink)}
+.panel{position:relative;border:.9cqw solid var(--ink);background:#fbf3df;overflow:hidden;min-height:0}
+.panel>img.fill,.panel>video.fill{width:100%;height:100%;object-fit:cover;display:block}
+.cap{position:absolute;background:var(--yellow);border:.55cqw solid var(--ink);padding:.6cqw 1.6cqw;font-weight:700;text-transform:uppercase;font-size:2.35cqw;line-height:1.25;letter-spacing:.03em;z-index:2}
+.cap.tl{top:1.6cqw;left:1.6cqw}.cap.bl{bottom:1.6cqw;left:1.6cqw}.cap.tr{top:1.6cqw;right:1.6cqw}.cap.br{bottom:1.6cqw;right:1.6cqw}
+.cap.blue{background:#cfe3ea}
+.narr{background:var(--yellow);border:.6cqw solid var(--ink);padding:1.6cqw 2.2cqw;font-weight:700;box-shadow:.8cqw .8cqw 0 var(--ink)}
+.dots{background-image:radial-gradient(var(--dot,rgba(28,22,18,.2)) .35cqw,transparent .42cqw);background-size:1.8cqw 1.8cqw}
+.sfx{font-family:var(--display);color:var(--yellow);-webkit-text-stroke:.45cqw var(--ink);paint-order:stroke fill;text-shadow:.8cqw .8cqw 0 var(--red);line-height:.9;letter-spacing:.03em}
+.burst{position:absolute;display:grid;place-items:center;text-align:center;background:var(--red);
+  clip-path:polygon(50% 0,61% 16%,79% 6%,79% 25%,98% 24%,87% 40%,100% 54%,84% 62%,92% 80%,73% 79%,68% 98%,53% 85%,38% 100%,32% 81%,12% 88%,17% 68%,0 58%,14% 45%,3% 28%,22% 25%,20% 5%,38% 15%)}
+.burst::before{content:"";position:absolute;inset:1.2cqw;background:var(--yellow);clip-path:inherit}
+.burst span{position:relative;font-family:var(--display);line-height:.95;padding:22%}
+.bubble{position:relative;background:#fffdf6;border:.6cqw solid var(--ink);border-radius:50%/50%;padding:3cqw 4cqw;font-weight:700;text-align:center}
+.bubble::after{content:"";position:absolute;left:18%;bottom:-3.6cqw;width:5cqw;height:4.4cqw;background:#fffdf6;border:.6cqw solid var(--ink);border-top:0;border-left:0;clip-path:polygon(0 0,100% 0,15% 100%);transform:skewX(-20deg)}
+
+/* ---------- 1. portada ---------- */
+.cover{padding:0;gap:0;background:var(--orange)}
+.cv-frame{position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 48% 64%,#3f9ad8 0 7deg,#2a6fb8 7deg 14deg);overflow:hidden}
+
+
+.cv-head{position:absolute;left:0;right:0;top:0;height:29cqh;background:transparent;z-index:3}
+.cv-corner{position:absolute;left:2.4cqw;top:2cqh;width:27cqw;background:var(--red);border:.8cqw solid var(--ink);box-shadow:.8cqw .8cqw 0 var(--ink);display:flex;flex-direction:column;align-items:center;gap:.8cqh;padding:1.6cqw 1.6cqw 1cqw;z-index:6}
+.cv-corner img{width:100%;transform:rotate(-4deg);filter:drop-shadow(.4cqw .5cqw .3cqw rgba(0,0,0,.4))}
+.cv-corner small{font-family:var(--display);font-size:3.8cqw;letter-spacing:.06em;color:var(--yellow);-webkit-text-stroke:.18cqw var(--ink);paint-order:stroke fill;line-height:1}
+.cv-banner{position:absolute;left:32cqw;right:2.4cqw;top:2cqh;background:var(--ink);color:var(--yellow);font-family:var(--display);font-size:3.3cqw;letter-spacing:.04em;padding:.8cqw 1.6cqw;text-align:center;line-height:1.05}
+.cv-logo{position:absolute;left:29.5cqw;top:6cqh;width:69cqw;height:auto;max-width:none;filter:drop-shadow(.8cqw .8cqw 0 rgba(28,22,18,.9));z-index:4}
+.cv-num{position:absolute;left:33cqw;top:30cqh;transform:translateY(-50%);display:flex;gap:1cqw;z-index:5}
+.cv-num span{font-family:var(--display);background:#fffdf6;border:.6cqw solid var(--ink);padding:.2cqw 1.4cqw;font-size:2.9cqw;letter-spacing:.05em}
+.cv-num span.n{background:var(--ink);color:#fffaf0}
+.cv-num span.p{background:var(--yellow)}
+.cv-art{position:absolute;left:0;right:0;top:0;bottom:0;overflow:hidden}
+.cv-art::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 48% 64%,rgba(255,246,200,.95) 0 11%,rgba(190,230,255,.45) 30%,transparent 62%)}
+.cv-art::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(10,40,90,.28) .4cqw,transparent .5cqw);background-size:1.9cqw 1.9cqw;mix-blend-mode:multiply}
+.cv-hero{position:absolute;left:50%;top:62%;width:62cqw;transform:translate(-50%,-46%) rotate(-6deg);z-index:2;filter:drop-shadow(1.4cqw 1.4cqw 0 rgba(28,22,18,.85))}
+.cv-en{position:absolute;z-index:2;filter:drop-shadow(.8cqw .8cqw 0 rgba(28,22,18,.8))}
+.cv-en.e1{width:27cqw;left:3cqw;top:40cqh;transform:rotate(-14deg)}
+.cv-en.e2{width:19cqw;left:42cqw;top:36cqh;transform:rotate(10deg)}
+.cv-en.e3{width:19cqw;right:6cqw;bottom:20cqh;transform:rotate(-8deg)}
+.cv-en.e4{width:14cqw;left:6cqw;bottom:22cqh;transform:rotate(16deg)}
+.cv-callout{left:auto;right:2cqw;top:36cqh;width:30cqw;aspect-ratio:1;z-index:4;transform:rotate(8deg)}
+.cv-callout span{font-size:3.6cqw}
+.cv-callout em{display:block;font-style:normal;font-size:1.6em;color:var(--red);-webkit-text-stroke:.15cqw var(--ink)}
+.cv-tag{position:absolute;left:3cqw;top:37cqh;z-index:4;background:var(--yellow);border:.6cqw solid var(--ink);padding:.8cqw 1.8cqw;font-family:var(--display);font-size:3.4cqw;letter-spacing:.04em;line-height:1;transform:rotate(-3deg);box-shadow:.8cqw .8cqw 0 var(--ink)}
+.cv-foot{position:absolute;left:0;right:0;bottom:0;height:17cqh;z-index:4;display:flex;align-items:flex-end;justify-content:space-between;padding:0 2.4cqw 2.4cqw}
+.cv-ademas{background:var(--green);color:#fffaf0;border:.7cqw solid var(--ink);padding:1.2cqw 2.4cqw;font-family:var(--display);font-size:3.2cqw;letter-spacing:.04em;line-height:1;transform:rotate(-2deg);box-shadow:.8cqw .8cqw 0 var(--ink)}
+.cv-ademas b{display:block;font-weight:400;font-size:6cqw;color:var(--yellow);-webkit-text-stroke:.25cqw var(--ink);paint-order:stroke fill}
+.barcode{background:#fffdf6;border:.5cqw solid var(--ink);padding:1cqw 1.4cqw .6cqw;width:24cqw}
+.barcode svg{width:100%;height:8cqw;display:block}
+.barcode small{display:block;font-size:1.8cqw;font-weight:700;letter-spacing:.2em;text-align:center}
+
+/* ---------- 2. índice ---------- */
+.toc{list-style:none;margin:0;padding:0;display:grid;gap:1.3cqw}
+.toc li{display:grid;grid-template-columns:auto 1fr auto;gap:1.6cqw;align-items:baseline;font-weight:700;font-size:3.3cqw}
+.toc li::after{content:"";order:2;border-bottom:.4cqw dotted var(--ink);transform:translateY(-.6cqw)}
+.toc li span:first-child{order:1}
+.toc li span:last-child{order:3;font-family:var(--display);font-size:4cqw;color:var(--red)}
+.indicia{margin-top:auto;font-size:1.95cqw;line-height:1.4;border-top:.5cqw solid var(--ink);padding-top:1.6cqw;color:#3b3026}
+.inside-hero{display:flex;gap:3cqw;align-items:center}
+.inside-hero img{width:22cqw;flex:none}
+
+/* ---------- 3. gancho ---------- */
+.hook-splash{flex:1 1 auto;min-height:30cqh}
+.hook-line{font-family:var(--display);font-size:6.6cqw;line-height:1;letter-spacing:.02em}
+.hook-line span{color:var(--red)}
+.facts{display:grid;grid-template-columns:1fr 1fr;border:.7cqw solid var(--ink);background:#fbf3df}
+.facts div{padding:1.4cqw 2cqw;border-right:.5cqw solid var(--ink);border-bottom:.5cqw solid var(--ink);margin:0 -.5cqw -.5cqw 0}
+.facts dt{font-family:var(--display);color:var(--red);font-size:3cqw;letter-spacing:.05em}
+.facts dd{margin:0;font-weight:700;font-size:2.9cqw;line-height:1.25}
+.facts dl{margin:0}
+
+/* ---------- 4. historia ---------- */
+.story-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:2.2cqw;min-height:0}
+.story-grid .panel{padding:2.4cqw;display:flex;flex-direction:column;gap:1.4cqw;font-size:2.75cqw}
+.story-grid .p1{grid-column:1 / 3;background:#2a2622;color:#f3e6c6;flex-direction:row;align-items:center}
+.story-grid .p1 .q{flex:none;width:20cqw;aspect-ratio:1;border:.5cqw dashed var(--yellow);display:grid;place-items:center;font-family:var(--display);font-size:13cqw;color:var(--yellow)}
+.story-grid .p1 h3{color:var(--yellow)}
+.story-grid h3{font-family:var(--display);font-weight:400;font-size:4.6cqw;margin:0;line-height:1;letter-spacing:.03em}
+.story-grid .p2{background-color:#e9f1df;--dot:rgba(29,127,82,.25)}
+.story-grid .p2 .crowd{display:flex;align-items:flex-end;justify-content:center;gap:1cqw;margin-top:auto}
+.story-grid .p2 .crowd img{width:22%}
+.story-grid .p3{background-color:#cfe3ea;--dot:rgba(45,111,147,.3);align-items:center;text-align:center}
+.story-grid .p3 img{width:46%;margin-top:auto}
+.story-grid .p4{grid-column:1 / 3;background:var(--yellow);flex-direction:row;align-items:center;gap:3cqw}
+.story-grid .p4 .sfx{font-size:8cqw;flex:none}
+
+/* ---------- 5. pilares ---------- */
+.pillars{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2.2cqw;min-height:0}
+.pillar{display:grid;grid-template-rows:1fr auto}
+.pillar .vis{position:relative;overflow:hidden;border-bottom:.7cqw solid var(--ink);min-height:0}
+.pillar .vis>img,.pillar .vis>video{width:100%;height:100%;object-fit:cover}
+.pillar .txt{padding:1.6cqw 2cqw;font-size:2.55cqw;line-height:1.3}
+.pillar h3{font-family:var(--display);font-weight:400;font-size:4.1cqw;margin:0 0 .4cqw;color:var(--red);line-height:1}
+.jazzvis{display:grid;place-items:center;background:var(--cyan);--dot:rgba(0,0,0,.2)}
+.jazzvis .sfx{font-size:13cqw;transform:rotate(-8deg)}
+.vid-dark{background:#000}
+.vid-dark>video{object-fit:contain!important}
+
+/* ---------- 6. gameplay ---------- */
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw;list-style:none;margin:0;padding:0;counter-reset:s}
+.loop li{position:relative;border:.7cqw solid var(--ink);background:#fbf3df;padding:1.6cqw 1.4cqw;font-size:2.35cqw;line-height:1.25;font-weight:700;counter-increment:s}
+.loop li::before{content:counter(s);display:block;font-family:var(--display);font-size:6cqw;color:var(--red);line-height:.9}
+.loop li:not(:last-child)::after{content:"";position:absolute;right:-2.9cqw;top:42%;width:2.6cqw;height:2.6cqw;background:var(--ink);clip-path:polygon(0 0,100% 50%,0 100%);z-index:2}
+.leaves{display:grid;grid-template-columns:auto 1fr;gap:3cqw;align-items:center;padding:2.4cqw;background-color:#e9f1df;--dot:rgba(29,127,82,.25)}
+.leaves img{width:20cqw}
+.leaves h3{font-family:var(--display);font-weight:400;font-size:5cqw;margin:0 0 .6cqw;line-height:1;color:var(--green)}
+.leafmeter{display:flex;gap:1cqw;margin-top:1.2cqw;align-items:center;font-weight:700;font-size:2.4cqw}
+.leafmeter i{width:3.6cqw;height:5cqw;background:var(--green);border:.45cqw solid var(--ink);border-radius:50% 0 50% 0;display:inline-block}
+.leafmeter i.off{background:transparent;border-style:dashed}
+.vids{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2cqw;min-height:0}
+.vids .panel{background:#000}
+.vids video{width:100%;height:100%;object-fit:contain}
+
+/* ---------- 7. arte ---------- */
+.art-main{flex:1 1 auto;min-height:0}
+.moods{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw}
+.moods .panel{background:#fff;padding:.8cqw}
+.moods img{width:100%;aspect-ratio:1.75;object-fit:cover;object-position:left}
+.credit{font-family:var(--hand);color:var(--cyan);font-size:2.6cqw;transform:rotate(-1.5deg)}
+
+/* ---------- 8. reparto ---------- */
+.cast{display:grid;grid-template-columns:1.1fr 1fr;gap:2.2cqw}
+.cast .panel{padding:2cqw;display:flex;gap:2cqw;align-items:center;font-size:2.5cqw;line-height:1.3}
+.cast h3{font-family:var(--display);font-weight:400;font-size:4.6cqw;margin:0;line-height:1}
+.cast .hero{background:var(--yellow)}
+.cast .hero img{width:15cqw;flex:none}
+.cast .vil{background:#2a2622;color:#f3e6c6}
+.cast .vil h3{color:var(--yellow)}
+.cast .vil .q{flex:none;width:12cqw;aspect-ratio:1;border:.45cqw dashed var(--yellow);display:grid;place-items:center;font-family:var(--display);font-size:8cqw;color:var(--yellow)}
+.enemies{display:grid;grid-template-columns:repeat(4,1fr);gap:1.8cqw}
+.enemy{border:.7cqw solid var(--ink);background:#fffdf6;text-align:center;padding:1cqw 1cqw 1.4cqw;box-shadow:.7cqw .7cqw 0 var(--ink)}
+.enemy .art{height:15cqw;display:grid;place-items:center;border:.45cqw solid var(--ink);background-color:#e9f1df;--dot:rgba(29,127,82,.25);margin-bottom:1cqw}
+.enemy img{max-height:13cqw;width:auto}
+.enemy b{font-family:var(--display);font-weight:400;font-size:3.3cqw;display:block;line-height:1;letter-spacing:.03em}
+.enemy small{font-size:2cqw;font-weight:700}
+.boss{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.5fr;gap:2cqw;align-items:stretch}
+.boss .panel{background:#fff}
+.boss .panel img{width:100%;height:100%;object-fit:contain}
+.boss .txt{display:flex;flex-direction:column;justify-content:center;gap:1.2cqw;font-size:2.6cqw}
+.boss h3{font-family:var(--display);font-weight:400;font-size:5.4cqw;margin:0;line-height:1;color:var(--red)}
+
+/* ---------- 9. música ---------- */
+.music{flex:1;background:var(--cyan);--dot:rgba(0,0,0,.2);color:#f4ead2;padding:3cqw;display:flex;flex-direction:column;gap:2.6cqw}
+.music p{color:#f4ead2}
+.music .sfx{font-size:11cqw;align-self:flex-end;transform:rotate(-6deg)}
+.track{display:grid;grid-template-columns:auto 1fr;gap:2.4cqw;align-items:center;background:#fbf3df;color:var(--ink);border:.6cqw solid var(--ink);box-shadow:.8cqw .8cqw 0 var(--ink);padding:2cqw}
+.track h3{font-family:var(--display);font-weight:400;font-size:5cqw;margin:0;line-height:1}
+.track small{font-weight:700;font-size:2.3cqw}
+.play{width:12cqw;height:12cqw;border:0;padding:0;cursor:pointer;background:var(--red);display:grid;place-items:center;position:relative;
+  clip-path:polygon(50% 0,61% 16%,79% 6%,79% 25%,98% 24%,87% 40%,100% 54%,84% 62%,92% 80%,73% 79%,68% 98%,53% 85%,38% 100%,32% 81%,12% 88%,17% 68%,0 58%,14% 45%,3% 28%,22% 25%,20% 5%,38% 15%)}
+.play::before{content:"";position:absolute;inset:.9cqw;background:var(--yellow);clip-path:inherit}
+.play svg{position:relative;width:4cqw;height:4cqw;fill:var(--ink)}
+.bar{height:1.6cqw;border:.45cqw solid var(--ink);background:#e2d2ae;margin-top:1cqw;position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--red)}
+.music .credit{color:var(--yellow)}
+.scene{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:2cqw}
+.scene img{width:24cqw}
+.scene .bubble{color:var(--ink);font-size:3cqw;margin-bottom:10cqw}
+
+/* ---------- 10. trayectoria ---------- */
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0;border:.8cqw solid var(--ink);background:#fbf3df}
+.timeline li{display:grid;grid-template-columns:20cqw 1fr;gap:2cqw;align-items:center;padding:1.8cqw 2.4cqw;border-bottom:.5cqw solid var(--ink);font-size:2.7cqw;line-height:1.3}
+.timeline li:last-child{border-bottom:0;background:var(--yellow)}
+.timeline .yr{font-family:var(--display);font-size:6cqw;color:var(--red);line-height:1}
+.timeline b{display:block;font-size:3.1cqw}
+.traction{position:relative;flex:1;min-height:0;display:grid;grid-template-columns:1fr auto;gap:3cqw;align-items:center;padding:3cqw;background:#2a2622;color:#f3e6c6}
+.traction h3{font-family:var(--display);font-weight:400;font-size:5.4cqw;margin:0 0 1cqw;color:var(--yellow);line-height:1}
+.traction .burst{position:relative;width:30cqw;aspect-ratio:1}
+.traction .burst span{font-size:3.4cqw;color:var(--ink)}
+.traction .burst big{display:block;font-size:2.6em;color:var(--red)}
+
+/* ---------- 11. equipo ---------- */
+.team{display:grid;gap:2.2cqw}
+.member{display:grid;grid-template-columns:auto 1fr;gap:2.6cqw;align-items:center;padding:2.2cqw}
+.member .ini{width:14cqw;aspect-ratio:1;border:.6cqw solid var(--ink);display:grid;place-items:center;font-family:var(--display);font-size:6.4cqw;background:var(--yellow)}
+.member:nth-child(2) .ini{background:#cfe3ea}.member:nth-child(3) .ini{background:#e9f1df}.member:nth-child(4) .ini{background:#f6c7a1}
+.member h3{font-family:var(--display);font-weight:400;font-size:4.4cqw;margin:0;line-height:1}
+.member p{font-size:2.55cqw;line-height:1.3}
+.member.lead{background:var(--yellow)}
+.member.lead .ini{background:#fffdf6}
+.quote{font-family:var(--display);font-size:4.6cqw;line-height:1.05;letter-spacing:.02em}
+.sketchstrip{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw}
+.sketchstrip .panel{background:#fff}
+.sketchstrip img{width:100%;height:100%;object-fit:cover}
+.sketchpanel{flex:1;min-height:0;background:#fff}
+.sketchpanel img{width:100%;height:100%;object-fit:contain;padding:3cqw 1cqw 1cqw}
+
+/* ---------- 12. lanzamiento ---------- */
+.launch{display:grid;grid-template-columns:1fr 1fr;gap:2.2cqw}
+.launch .panel{padding:2.4cqw;text-align:center}
+.launch .big{font-family:var(--display);font-size:9cqw;line-height:.95;color:var(--red);display:block}
+.launch small{font-weight:700;font-size:2.5cqw;display:block}
+.launch .wide{grid-column:1 / 3;background:var(--yellow)}
+.plats{display:flex;justify-content:center;gap:2cqw;flex-wrap:wrap;margin-top:1.2cqw}
+.plats span{font-family:var(--display);font-size:4.4cqw;background:#fffdf6;border:.6cqw solid var(--ink);padding:.4cqw 2.4cqw;box-shadow:.6cqw .6cqw 0 var(--ink)}
+.next{padding:2.6cqw;display:flex;flex-direction:column;gap:1.4cqw;background-color:#cfe3ea;--dot:rgba(45,111,147,.3)}
+.next h3{font-family:var(--display);font-weight:400;font-size:5cqw;margin:0;line-height:1}
+.next ul{margin:0;padding-left:3.4cqw;font-size:2.7cqw;display:grid;gap:.8cqw}
+
+/* ---------- 13. contacto ---------- */
+.continue{font-family:var(--display);font-size:13cqw;line-height:.85;transform:rotate(-4deg);align-self:center;margin:2cqw 0}
+.contact{display:grid;gap:0;border:.8cqw solid var(--ink);background:var(--yellow);--dot:rgba(196,42,28,.22)}
+.contact div{display:grid;grid-template-columns:24cqw 1fr;gap:2cqw;padding:1.6cqw 2.4cqw;border-bottom:.45cqw dashed var(--ink);align-items:baseline}
+.contact div:last-child{border-bottom:0}
+.contact span{font-family:var(--display);color:var(--red);font-size:3.2cqw;letter-spacing:.05em}
+.contact strong{font-size:3.1cqw;user-select:all;overflow-wrap:anywhere}
+.end-art{flex:1;min-height:0;display:flex;align-items:flex-end;justify-content:space-between;gap:2cqw}
+.end-art img{height:100%;max-height:30cqw;width:auto;object-fit:contain}
+.end-art .bubble{font-size:3cqw;max-width:52cqw;margin-bottom:12cqw}
+
+/* ---------- 14. contraportada ---------- */
+.backcover{padding:0;background:var(--green)}
+.bc-frame{position:absolute;inset:2.4cqw;border:1cqw solid var(--ink);background:#fff6e2;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:5cqw 4cqw;text-align:center;overflow:hidden}
+.bc-frame::before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 46%,rgba(243,180,36,.35) 0 6deg,transparent 6deg 12deg);z-index:0}
+.bc-frame>*{position:relative;z-index:1}
+.bc-top{font-family:var(--display);font-size:5.4cqw;line-height:1;letter-spacing:.04em;background:var(--red);color:#fffaf0;padding:1cqw 3cqw;border:.7cqw solid var(--ink);transform:rotate(-2deg)}
+.bc-logo{width:88%;filter:drop-shadow(1cqw 1cqw 0 rgba(28,22,18,.85))}
+.bc-row{display:flex;align-items:center;justify-content:center;gap:4cqw;width:100%}
+.bc-row img.stamp{width:24cqw;transform:rotate(-6deg);filter:drop-shadow(.6cqw .8cqw .4cqw rgba(0,0,0,.3))}
+.bc-row{position:relative}
+.bc-row img.pose{width:30cqw}
+.bc-row img.scared{width:28cqw;transform:rotate(-8deg);filter:drop-shadow(1cqw 1cqw 0 rgba(28,22,18,.8))}
+.bc-row img.chaser{width:34cqw;transform:scaleX(-1) rotate(-6deg);filter:drop-shadow(-1cqw 1cqw 0 rgba(28,22,18,.8))}
+.bc-sfx{position:absolute;left:50%;top:-4cqw;transform:translateX(-50%) rotate(-6deg);font-size:8cqw}
+.bc-coupon{border:.6cqw dashed var(--ink);background:#fffdf6;padding:2cqw 3cqw;font-weight:700;font-size:2.9cqw;line-height:1.3;max-width:80cqw}
+.bc-coupon b{font-family:var(--display);font-weight:400;font-size:4.6cqw;display:block;color:var(--red);letter-spacing:.03em}
+.bc-small{font-size:2cqw;font-weight:700}
+
+
+/* ---------- aviso móvil y regreso ---------- */
+.mwarn{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(10,18,8,.72)}
+.mwarn[hidden]{display:none}
+.mwarn-card{max-width:340px;background:#fff6e2;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:22px 20px 18px;text-align:center;display:grid;gap:12px;justify-items:center;font-size:16px;line-height:1.4}
+.mwarn-card img{width:96px}
+.mwarn-card h2{font-family:var(--display);font-weight:400;font-size:2rem;margin:0;line-height:1;color:var(--red);letter-spacing:.03em}
+.mwarn-card p{margin:0}
+.mwarn-card .nav{font-size:1.2rem}
+.backlink{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:12px;z-index:50;font-family:var(--display);font-size:1.05rem;letter-spacing:.04em;background:var(--yellow);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:.15em .7em;color:var(--ink);text-decoration:none}
+.backlink[hidden]{display:none}
+@media (max-width:640px){.stage{padding:8px 8px 8px}.controls{gap:8px}}
+@media (prefers-reduced-motion:reduce){.leaf,.book{transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+
+<a class="backlink" id="backlink" href="index.html" hidden>‹ Press kit</a>
+<div class="mwarn" id="mwarn" hidden role="dialog" aria-modal="true" aria-labelledby="mwarn-t">
+  <div class="mwarn-card">
+    <img src="a/pose-sorpresa.webp" alt="">
+    <h2 id="mwarn-t">¡Psst! Este cómic luce mejor en grande</h2>
+    <p>Para una mejor experiencia, ábrelo en una computadora o un iPad. En el celular verás una página a la vez: desliza o usa los botones para pasar las hojas.</p>
+    <button class="nav" type="button" id="mwarn-ok">Ver de todos modos</button>
+  </div>
+</div>
+<div class="stage">
+  <div class="viewport" id="viewport">
+    <div class="book spread at-start no-anim" id="book" aria-live="polite"></div>
+  </div>
+  <div class="controls">
+    <button class="nav" id="prev" type="button" aria-label="Página anterior">‹ Anterior</button>
+    <span class="counter" id="counter">Portada</span>
+    <button class="nav" id="next" type="button" aria-label="Página siguiente">Siguiente ›</button>
+    <span class="hint">Usa las flechas del teclado o la esquina de la página</span>
+  </div>
+</div>
+
+<div id="pages" hidden>
+
+  <!-- 1 · PORTADA -->
+  <section class="pg cover" data-label="Portada">
+    <div class="cv-frame">
+      <div class="cv-head">
+        <div class="cv-corner"><img src="a/sello-color.webp" alt="Sello Certificado 100% Cebolla"><small>Pitch deck</small></div>
+        <div class="cv-banner">Una cebollita diferente… ¿podrá salvar su mundo?</div>
+        <img class="cv-logo" src="a/logo-amazing.webp" alt="The Amazing Cebollín">
+        <div class="cv-num"><span class="n">Núm. 1</span><span>¡Edición catorcenal!</span><span class="p">N$190</span></div>
+      </div>
+      <div class="cv-art">
+        <img class="cv-en e1" src="a/fresarana.webp" alt="">
+        <img class="cv-en e2" src="a/mora-pulgona.webp" alt="">
+        <img class="cv-en e3" src="a/explotamora.webp" alt="">
+        <img class="cv-en e4" src="a/frambeja.webp" alt="">
+        <img class="cv-hero" src="a/pose-enojo.webp" alt="Cebollín listo para pelear">
+      </div>
+      <div class="cv-tag">Platformer 2.5D<br>de acción acrobática</div>
+      <div class="burst cv-callout"><span>¡Cuidado!<em>¡Es la plaga mutante!</em></span></div>
+      <div class="cv-foot">
+        <div class="cv-ademas">Además:<b>¡El Dr. Rabadín!</b></div>
+        <div class="barcode"><svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true" class="bars"></svg><small>CEBOLLIN·001</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · ÍNDICE -->
+  <section class="pg" data-label="En este número">
+    <h2 class="pg-title">En este número</h2>
+    <div class="inside-hero">
+      <img src="a/pose-sorpresa.webp" alt="Cebollín sorprendido">
+      <div class="bubble">¡Hola! Soy Cebollín. Pasa la página y te cuento mi aventura.</div>
+    </div>
+    <ol class="toc">
+      <li><span>El gancho</span><span>3</span></li>
+      <li><span>La historia</span><span>4</span></li>
+      <li><span>¿Qué lo hace único?</span><span>5</span></li>
+      <li><span>Así se juega</span><span>6</span></li>
+      <li><span>Dirección de arte</span><span>7</span></li>
+      <li><span>El reparto</span><span>8</span></li>
+      <li><span>Banda sonora</span><span>9</span></li>
+      <li><span>Origen secreto</span><span>10</span></li>
+      <li><span>El equipo</span><span>11</span></li>
+      <li><span>El lanzamiento</span><span>12</span></li>
+      <li><span>¡Hablemos!</span><span>13</span></li>
+    </ol>
+    <p class="indicia">CEBOLLÍN, Núm. 1. Edición pitch, octubre de 2026. Publicado por Treehouse Studios, Zapopan, Jalisco, México. Cebollín, el Dr. Rabadín, la plaga mutante y todos los personajes son propiedad de Pablo Saúl González García. Prohibida su reproducción total o parcial sin permiso del autor.</p>
+    <span class="folio">2</span>
+  </section>
+
+  <!-- 3 · EL GANCHO -->
+  <section class="pg" data-label="El gancho">
+    <span class="kicker">El gancho</span>
+    <p class="hook-line">Un platformer narrativo 2.5D de <span>acción acrobática</span>, con alma de jazz.</p>
+    <div class="panel hook-splash"><img class="fill" src="a/shot-helecho.webp" alt="Cebollín entre helechos en un bosque hiperrealista"><span class="cap bl">Personajes 2D en un bosque hiperrealista</span></div>
+    <p>Una cebollita más chica de lo normal recorre las zonas de su mundo para detener la plaga mutante del Dr. Rabadín. En cada zona la guía un personaje local y la espera un jefe infectado.</p>
+    <dl class="facts">
+      <div><dt>Género</dt><dd>Plataformas · Narrativo · Acción</dd></div>
+      <div><dt>Plataformas</dt><dd>PC: Steam, Epic Games Store, itch.io</dd></div>
+      <div><dt>Lanzamiento</dt><dd>Q4 2027</dd></div>
+      <div><dt>Precio</dt><dd>$190 MXN</dd></div>
+    </dl>
+    <span class="folio">3</span>
+  </section>
+
+  <!-- 4 · LA HISTORIA -->
+  <section class="pg" data-label="La historia">
+    <h2 class="pg-title">La historia</h2>
+    <div class="story-grid">
+      <div class="panel p1">
+        <div class="q" aria-label="Arte del Dr. Rabadín próximamente">?</div>
+        <div><h3>El exilio del Dr. Rabadín</h3><p>Un inventor intenta usar los frutos del bosque como fuente de energía. Pero en este mundo las bayas son como animales. Le confiscan sus proyectos y lo exilian de por vida.</p></div>
+      </div>
+      <div class="panel p2 dots">
+        <h3>La plaga se extiende</h3>
+        <p>Su venganza, una plaga mutante, infecta sin querer a los aldeanos y a los depredadores que comen la fruta.</p>
+        <div class="crowd"><img src="a/fresarana.webp" alt=""><img src="a/mora-pulgona.webp" alt=""><img src="a/explotamora.webp" alt=""><img src="a/frambeja.webp" alt=""></div>
+      </div>
+      <div class="panel p3 dots">
+        <h3>Entra Cebollín</h3>
+        <p>Pequeño, distraído, pensativo y muy creativo.</p>
+        <img src="a/pose-helice.webp" alt="Cebollín con su hoja de hélice">
+      </div>
+      <div class="panel p4">
+        <span class="sfx">¡Zona<br>x zona!</span>
+        <p>Cada zona es un camino del héroe completo: un guía local, momentos cómicos, melancólicos e inspiradores, y un clímax contra el animal infectado que la domina.</p>
+      </div>
+    </div>
+    <span class="folio">4</span>
+  </section>
+
+  <!-- 5 · PILARES -->
+  <section class="pg" data-label="¿Qué lo hace único?">
+    <h2 class="pg-title">¿Qué lo hace único?</h2>
+    <div class="pillars">
+      <div class="panel pillar"><div class="vis"><img src="a/shot-tronco.webp" alt="Cebollín bajo un tronco caído"></div><div class="txt"><h3>Identidad visual realista</h3>Escenarios 3D hiperrealistas con personajes animados a mano en 2D.</div></div>
+      <div class="panel pillar"><div class="vis vid-dark"><video src="v/cebollin-carrera.mp4" muted loop autoplay playsinline aria-label="Cebollín corriendo y atacando"></video></div><div class="txt"><h3>Gamefeel acrobático</h3>Movimiento ágil y preciso, pensado para que cada salto se sienta bien.</div></div>
+      <div class="panel pillar"><div class="vis jazzvis dots"><span class="sfx" aria-hidden="true">♪ ♫</span></div><div class="txt"><h3>Jazz en cada zona</h3>Banda sonora original de jazz y jazz fusion, con un sabor distinto por región.</div></div>
+      <div class="panel pillar"><div class="vis"><img src="a/mood-1.webp" alt="Moodboard de color a partir de fotografía de campo" style="object-position:left"></div><div class="txt"><h3>Un mundo hecho con ciencia</h3>Cada zona nace de la observación de ecosistemas reales y fotografía de campo.</div></div>
+    </div>
+    <span class="folio">5</span>
+  </section>
+
+  <!-- 6 · GAMEPLAY -->
+  <section class="pg" data-label="Así se juega">
+    <h2 class="pg-title">Así se juega</h2>
+    <ol class="loop">
+      <li>Explora una nueva zona del mundo</li>
+      <li>Conoce al guía de la zona</li>
+      <li>Plataformea y pelea contra la plaga</li>
+      <li>Enfrenta al jefe infectado</li>
+    </ol>
+    <div class="panel leaves dots">
+      <img src="a/pose-lado.webp" alt="Cebollín de perfil">
+      <div>
+        <h3>Las hojas son su vida</h3>
+        <p>La salud de Cebollín se ve en su cabeza: sus hojas son su vida. Cada golpe le cuesta hojas, y sin ellas hay movimientos que ya no puede hacer.</p>
+        <div class="leafmeter" aria-hidden="true"><i></i><i></i><i class="off"></i><span>¡Cuida tus hojas!</span></div>
+      </div>
+    </div>
+    <div class="vids">
+      <div class="panel"><video src="v/cebollin-vuelo.mp4" muted loop autoplay playsinline aria-label="Cebollín planeando con hélice"></video><span class="cap bl">Planeo</span></div>
+      <div class="panel"><video src="v/cebollin-caminata-2.mp4" muted loop autoplay playsinline aria-label="Cebollín caminando"></video><span class="cap bl">Caminata</span></div>
+      <div class="panel"><video src="v/cebollin-caminata.mp4" muted loop autoplay playsinline aria-label="Cebollín en reposo"></video><span class="cap bl">Idle</span></div>
+    </div>
+    <span class="folio">6</span>
+  </section>
+
+  <!-- 7 · ARTE -->
+  <section class="pg" data-label="Dirección de arte">
+    <h2 class="pg-title">Dirección de arte</h2>
+    <div class="panel art-main"><img class="fill" src="a/shot-cueva.webp" alt="Cebollín en una cueva con luciérnagas"><span class="cap tl">La cueva de las luciérnagas</span></div>
+    <p>Un personaje de caricatura, pequeño y expresivo, en un mundo que se siente de verdad. Cada zona parte de una foto de campo, y de cada foto sale la paleta de luz, suelo y vegetación del nivel.</p>
+    <div class="moods">
+      <div class="panel"><img src="a/mood-1.webp" alt="Moodboard verde y tierra"></div>
+      <div class="panel"><img src="a/mood-2.webp" alt="Moodboard nocturno"></div>
+      <div class="panel"><img src="a/mood-3.webp" alt="Moodboard de raíces"></div>
+    </div>
+    <span class="credit">Fotografía: Pablo Saúl González (@ps.ictures)</span>
+    <span class="folio">7</span>
+  </section>
+
+  <!-- 8 · REPARTO -->
+  <section class="pg" data-label="El reparto">
+    <h2 class="pg-title">El reparto</h2>
+    <div class="cast">
+      <div class="panel hero"><img src="a/icono.webp" alt="Cebollín"><div><h3>Cebollín</h3>El héroe: una cebollita diferente, de corazón fuerte.</div></div>
+      <div class="panel vil"><div class="q" aria-hidden="true">?</div><div><h3>Dr. Rabadín</h3>Inventor exiliado y origen de la plaga.</div></div>
+    </div>
+    <div class="enemies">
+      <div class="enemy"><div class="art dots"><img src="a/fresarana.webp" alt=""></div><b>Fresaraña</b><small>Fresa</small></div>
+      <div class="enemy"><div class="art dots"><img src="a/mora-pulgona.webp" alt=""></div><b>Mora-pulgona</b><small>Mora azul</small></div>
+      <div class="enemy"><div class="art dots"><img src="a/explotamora.webp" alt=""></div><b>Explotamora</b><small>Zarzamora</small></div>
+      <div class="enemy"><div class="art dots"><img src="a/frambeja.webp" alt=""></div><b>Frambeja</b><small>Frambuesa</small></div>
+    </div>
+    <div class="boss">
+      <div class="txt"><span class="kicker">Concepto de jefe</span><h3>Lily Tlacuache</h3><p>Una depredadora transformada por la plaga. Estudios a lápiz de sus poses, ataques y planos de cámara.</p></div>
+      <div class="panel"><img src="a/boceto-lily.webp" alt="Bocetos a lápiz de Lily Tlacuache"></div>
+    </div>
+    <span class="folio">8</span>
+  </section>
+
+  <!-- 9 · MÚSICA -->
+  <section class="pg" data-label="Banda sonora">
+    <h2 class="pg-title">Banda sonora</h2>
+    <div class="music dots">
+      <span class="sfx" aria-hidden="true">¡Swing!</span>
+      <p>El jazz y el jazz fusion son la gran pasión musical detrás de Cebollín. Cada zona del mundo tiene su propio sabor de jazz, con instrumentos y elementos distintos.</p>
+      <div class="track" data-src="m/valle-verdura.mp3"><button class="play" type="button" aria-label="Reproducir Valle Verdura"></button><div><h3>Valle Verdura</h3><small>Tema de zona · 2:55</small><div class="bar"><i></i></div></div></div>
+      <div class="track" data-src="m/combate-jazz.mp3"><button class="play" type="button" aria-label="Reproducir Combate Jazz"></button><div><h3>Combate Jazz</h3><small>Tema de combate · 1:30</small><div class="bar"><i></i></div></div></div>
+      <div class="scene"><div class="bubble">♪ Ba-dum-tss… ¡dale play! ♪</div><img src="a/pose-sorpresa.webp" alt="Cebollín escuchando"></div>
+      <span class="credit">Música y SFX: Fernando Sainz Parada</span>
+    </div>
+    <span class="folio">9</span>
+  </section>
+
+  <!-- 10 · TRAYECTORIA -->
+  <section class="pg" data-label="Origen secreto">
+    <h2 class="pg-title">Origen secreto</h2>
+    <ol class="timeline">
+      <li><span class="yr">2023</span><div><b>Unity 2D</b>Nace como proyecto para aprender a hacer videojuegos.</div></li>
+      <li><span class="yr">2025</span><div><b>Godot 2D</b>El proyecto migra a Godot.</div></li>
+      <li><span class="yr">2026</span><div><b>Godot 3D</b>Salto a 3D para la perspectiva 2.5D.</div></li>
+      <li><span class="yr">2026</span><div><b>Ingenia PLAYLAB</b>Entra a la incubadora y suma producción musical.</div></li>
+      <li><span class="yr">Q4 '27</span><div><b>Lanzamiento</b>Steam, Epic Games Store e itch.io.</div></li>
+    </ol>
+    <div class="traction">
+      <div><h3>Seleccionado en la incubadora</h3><p>Cebollín quedó entre los 25 proyectos seleccionados de 400 aplicantes de todo el país para avanzar a la fase final. Ahí su creador se formó en diseño de juego, planeación y gestión de proyectos.</p></div>
+      <div class="burst"><span>Top<big>25</big>de 400</span></div>
+    </div>
+    <span class="folio">10</span>
+  </section>
+
+  <!-- 11 · EQUIPO -->
+  <section class="pg" data-label="El equipo">
+    <h2 class="pg-title">El equipo</h2>
+    <div class="team">
+      <div class="panel member lead"><span class="ini">PS</span><div><h3>Pablo Saúl González García</h3><p>Creador y director. Dirección creativa, programación, animación, visuales 3D, ambientación, concept art, diseño de niveles y worldbuilding. Originario de Xalapa, Veracruz.</p></div></div>
+      <div class="panel member"><span class="ini">FE</span><div><h3>Frida Jimena Espinosa Velázquez</h3><p>Animación 2D</p></div></div>
+      <div class="panel member"><span class="ini">JC</span><div><h3>Jackeline Cuevas Sánchez</h3><p>Animación 2D</p></div></div>
+      <div class="panel member"><span class="ini">FS</span><div><h3>Fernando Sainz Parada</h3><p>Producción musical y SFX</p></div></div>
+    </div>
+    <div class="sketchstrip"><div class="panel"><img src="a/boceto-1.webp" alt="Boceto de Cebollín"></div><div class="panel"><img src="a/boceto-2.webp" alt="Boceto de Cebollín"></div><div class="panel"><img src="a/boceto-3.webp" alt="Boceto de Cebollín"></div></div>
+    <p class="quote">“Descubrí que me gustaba mucho animar y crear personajes. Cebollín se volvió un reflejo de mí.”</p>
+    <span class="folio">11</span>
+  </section>
+
+  <!-- 12 · LANZAMIENTO -->
+  <section class="pg" data-label="El lanzamiento">
+    <h2 class="pg-title">El lanzamiento</h2>
+    <div class="launch">
+      <div class="panel"><span class="big">Q4 2027</span><small>Ventana de lanzamiento</small></div>
+      <div class="panel"><span class="big">$190</span><small>Precio en MXN</small></div>
+      <div class="panel wide dots" style="--dot:rgba(196,42,28,.2)"><small>Plataformas</small><div class="plats"><span>Steam</span><span>Epic Games Store</span><span>itch.io</span></div></div>
+    </div>
+    <div class="panel next dots">
+      <h3>En desarrollo ahora</h3>
+      <ul>
+        <li>Producción de las zonas y sus jefes infectados.</li>
+        <li>Banda sonora de jazz por zona con Fernando Sainz Parada.</li>
+        <li>Animación 2D de personajes con Frida y Jackeline.</li>
+        <li>El final de la historia, que sigue en desarrollo.</li>
+      </ul>
+    </div>
+    <div class="panel sketchpanel"><img src="a/boceto-enemigos.webp" alt="Bocetos de exploración de enemigos"><span class="cap tl">Del cuaderno</span></div>
+    <span class="folio">12</span>
+  </section>
+
+  <!-- 13 · CONTACTO -->
+  <section class="pg" data-label="¡Hablemos!">
+    <h2 class="pg-title">¡Hablemos!</h2>
+    <div class="contact dots">
+      <div><span>Correo</span><strong>pablosaul2312@gmail.com</strong></div>
+      <div><span>Teléfono</span><strong>228 851 6838</strong></div>
+      <div><span>Sitio</span><strong>cebollingame.com</strong></div>
+      <div><span>Instagram</span><strong>@cebollingame</strong></div>
+      <div><span>Discord</span><strong>@Cebollin.GD</strong></div>
+      <div><span>YouTube</span><strong>Cebollin Game Channel</strong></div>
+    </div>
+    <div class="end-art">
+      <div class="bubble">¡Gracias por leer! Esta aventura apenas empieza.</div>
+      <img src="a/pose-helice.webp" alt="Cebollín despidiéndose">
+    </div>
+    <p class="sfx continue">¡Continuará…!</p>
+    <span class="folio">13</span>
+  </section>
+
+  <!-- 14 · CONTRAPORTADA -->
+  <section class="pg backcover" data-label="Contraportada">
+    <div class="bc-frame">
+      <span class="bc-top">¡Muy pronto en tu PC!</span>
+      <img class="bc-logo" src="a/logo-amazing.webp" alt="The Amazing Cebollín">
+      <div class="bc-row">
+        <img class="pose scared" src="a/pose-sorpresa.webp" alt="Cebollín espantado">
+        <span class="sfx bc-sfx" aria-hidden="true">¡Aaah!</span>
+        <img class="pose chaser" src="a/fresarana.webp" alt="Fresaraña persiguiendo a Cebollín">
+      </div>
+      <div class="bc-coupon"><b>Q4 2027</b>Steam · Epic Games Store · itch.io<br>cebollingame.com · @cebollingame</div>
+      <span class="bc-small">Treehouse Studios · Hecho en Zapopan, Jalisco, México</span>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var srcPages=[].slice.call(document.querySelectorAll('#pages > .pg'));
+  var N=srcPages.length, book=document.getElementById('book'), vp=document.getElementById('viewport');
+  var prev=document.getElementById('prev'), next=document.getElementById('next'), counter=document.getElementById('counter');
+  var mode=null, leaves=[], cur=0, busy=false;   // cur = number of flipped leaves
+
+  // código de barras decorativo
+  document.querySelectorAll('svg.bars').forEach(function(svg){
+    var x=2, seq='3121121311231211321131213112121131', out='';
+    for(var i=0;i<seq.length&&x<98;i++){var w=+seq[i]*0.9;if(i%2===0)out+='<rect x="'+x.toFixed(1)+'" y="0" width="'+w.toFixed(1)+'" height="40" fill="#1c1612"/>';x+=w+0.6}
+    svg.innerHTML=out;
+  });
+
+  function size(){
+    var W=vp.clientWidth, H=vp.clientHeight, ratio=0.66;
+    var ph=Math.min(H, 1100), pw=ph*ratio;
+    var spread = (W/2 >= 300) && (W >= H*0.9);
+    if(spread){ if(pw*2>W-8){pw=(W-8)/2;ph=pw/ratio} }
+    else { if(pw>W){pw=W;ph=pw/ratio} }
+    book.style.setProperty('--pw',Math.floor(pw)+'px');
+    book.style.setProperty('--ph',Math.floor(ph)+'px');
+    return spread?'spread':'single';
+  }
+
+  function makeFace(cls,page,label){
+    var f=document.createElement('div');f.className='face '+cls;
+    if(page){f.appendChild(page)} else f.classList.add('blank');
+    var hot=document.createElement('button');hot.type='button';hot.className='hot';
+    hot.setAttribute('aria-label',cls==='front'?'Pasar página':'Regresar página');
+    hot.addEventListener('click',function(e){e.stopPropagation(); cls==='front'?go(1):go(-1)});
+    f.appendChild(hot);
+    return f;
+  }
+
+  function build(newMode){
+    // posición actual como índice de página visible
+    var pageIdx = mode==='spread' ? Math.max(0,cur*2-1) : cur;
+    srcPages.forEach(function(p){document.getElementById('pages').appendChild(p)});
+    book.innerHTML=''; leaves=[];
+    var bl=document.createElement('div');bl.className='base l';book.appendChild(bl);var br=document.createElement('div');br.className='base r';book.appendChild(br);
+    mode=newMode; book.className='book no-anim '+mode;
+    setTimeout(function(){book.classList.remove('no-anim')},60);
+    var count = mode==='spread' ? Math.ceil(N/2) : N;
+    for(var i=0;i<count;i++){
+      var leaf=document.createElement('div');leaf.className='leaf';
+      if(mode==='spread'){
+        leaf.appendChild(makeFace('front',srcPages[i*2]));
+        leaf.appendChild(makeFace('back',srcPages[i*2+1]||null));
+      } else {
+        leaf.appendChild(makeFace('front',srcPages[i]));
+        leaf.appendChild(makeFace('back',null));
+      }
+      book.appendChild(leaf); leaves.push(leaf);
+    }
+    cur = mode==='spread' ? Math.min(count, Math.ceil(pageIdx/2)) : Math.min(count-1,pageIdx);
+    leaves.forEach(function(l,i){ l.classList.add('instant'); if(i<cur){l.classList.add('flipped'); if(mode==='single') l.classList.add('gone')} });
+    requestAnimationFrame(function(){requestAnimationFrame(function(){leaves.forEach(function(l){l.classList.remove('instant')})})});
+    stack(); update();
+  }
+
+  function stack(){
+    leaves.forEach(function(l,i){ l.style.zIndex = l.classList.contains('flipped') ? i+1 : leaves.length*2-i });
+  }
+
+  function update(){
+    var count=leaves.length;
+    book.classList.toggle('at-start', mode==='spread' && cur===0);
+    book.classList.toggle('at-end', mode==='spread' && cur===count);
+    var bL=book.querySelector('.base.l'),bR=book.querySelector('.base.r');
+    if(bL) bL.classList.toggle('off', cur===0);
+    if(bR) bR.classList.toggle('off', mode==='spread' ? cur===count : false);
+    prev.disabled = cur===0;
+    next.disabled = mode==='spread' ? cur===count : cur===count-1;
+    var label;
+    if(mode==='spread'){
+      if(cur===0) label='Portada';
+      else if(cur===count) label='Contraportada';
+      else label='Págs. '+(cur*2)+'–'+(cur*2+1)+' de '+N;
+    } else {
+      label = cur===0 ? 'Portada' : (cur===N-1 ? 'Contraportada' : 'Pág. '+(cur+1)+' de '+N);
+    }
+    counter.textContent=label;
+    // pausar videos ocultos, reproducir visibles
+    leaves.forEach(function(l,i){
+      var visible = mode==='spread' ? (i===cur || i===cur-1) : i===cur;
+      l.querySelectorAll('video').forEach(function(v){ if(visible){var p=v.play();p&&p.catch(function(){})} else v.pause() });
+    });
+  }
+
+  function go(dir){
+    if(busy) return;
+    var count=leaves.length;
+    if(dir>0){
+      var max = mode==='spread'?count:count-1;
+      if(cur>=max) return;
+      var l=leaves[cur]; busy=true;
+      l.style.zIndex=1000; l.classList.add('turning');
+      requestAnimationFrame(function(){ l.classList.add('flipped') });
+      cur++;
+      done(l,function(){ if(mode==='single') l.classList.add('gone') });
+    } else {
+      if(cur<=0) return;
+      var l=leaves[cur-1]; busy=true;
+      l.classList.remove('gone'); l.style.zIndex=1000; l.classList.add('turning');
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ l.classList.remove('flipped') }) });
+      cur--;
+      done(l);
+    }
+    update();
+  }
+  function done(l,after){
+    var finished=false;
+    function fin(){ if(finished) return; finished=true; l.classList.remove('turning'); after&&after(); stack(); busy=false }
+    l.addEventListener('transitionend',function h(e){ if(e.target===l&&e.propertyName==='transform'){l.removeEventListener('transitionend',h);fin()} });
+    setTimeout(fin,1200);
+  }
+
+  prev.addEventListener('click',function(){go(-1)});
+  next.addEventListener('click',function(){go(1)});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();go(1)}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(-1)}
+  });
+  var tx=null,ty=null;
+  vp.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+  vp.addEventListener('touchend',function(e){
+    if(tx===null) return; var dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.3) go(dx<0?1:-1); tx=null;
+  },{passive:true});
+
+  var rt; function onResize(){ clearTimeout(rt); rt=setTimeout(function(){ var m=size(); if(m!==mode) build(m) },120) }
+  window.addEventListener('resize',onResize);
+  var hm=/^#p(\d+)$/.exec(location.hash||''); if(hm){ var pi=Math.max(0,Math.min(N-1,(+hm[1])-1)); mode='single'; cur=pi; }
+  build(size());
+
+  // música
+  var PLAY='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l15 9-15 9z"/></svg>', PAUSE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h5v18H5zM14 3h5v18h-5z"/></svg>';
+  var audio=new Audio(), playing=null; audio.preload='none';
+  document.querySelectorAll('.track').forEach(function(t){
+    var b=t.querySelector('.play'); b.innerHTML=PLAY;
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(playing===t){ audio.paused?audio.play().catch(function(){}):audio.pause(); return }
+      if(playing){playing.querySelector('.play').innerHTML=PLAY;playing.querySelector('.bar i').style.width='0'}
+      playing=t; audio.src=t.dataset.src; audio.play().catch(function(){});
+    });
+  });
+  audio.addEventListener('play',function(){ if(playing) playing.querySelector('.play').innerHTML=PAUSE });
+  audio.addEventListener('pause',function(){ if(playing) playing.querySelector('.play').innerHTML=PLAY });
+  audio.addEventListener('timeupdate',function(){ if(playing&&audio.duration) playing.querySelector('.bar i').style.width=(audio.currentTime/audio.duration*100)+'%' });
+})();
+(function(){
+  var w=document.getElementById('mwarn');
+  if(Math.min(window.innerWidth,window.innerHeight)<600){w.hidden=false;document.getElementById('mwarn-ok').focus()}
+  document.getElementById('mwarn-ok').addEventListener('click',function(){w.hidden=true});
+  if(/\/pitch\/?(index\.html)?$/.test(location.pathname)){var b=document.getElementById('backlink');b.href='../index.html';b.hidden=false}
+})();
+</script>
+
+</body>
+</html>
