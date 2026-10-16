@@ -736,8 +736,9 @@ li.tbd,p.tbd,div.tbd{padding:0 .6cqw}
 .fullshot img{width:100%;height:100%;object-fit:cover}
 .shotbox img{width:100%;height:100%;object-fit:cover}
 .pg[data-label="Producto · Personaje"] .layers{grid-template-columns:40cqw 1fr}
-.leafvida{display:grid;grid-template-columns:24cqw 1fr;gap:3cqw;align-items:center;border:.6cqw solid #111;padding:2cqw;background:#e3efd8;margin-top:auto}
-.leafvida img{width:100%}
+.leafvida{display:grid;grid-template-columns:1.7fr 1fr;gap:3cqw;align-items:center;border:.6cqw solid #111;padding:2cqw;background:#e3efd8;margin-top:auto}
+.pg[data-label="Producto · Personaje"] .leafvida{margin-top:0}
+.leafvida video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#000;border:.45cqw solid #111;display:block}
 .leafvida b{font-family:var(--display);font-weight:400;font-size:6cqw;color:var(--green)}
 .lm{display:flex;gap:1.4cqw;margin:1cqw 0}
 .lm i{width:5cqw;height:7cqw;background:var(--green);border:.5cqw solid #111;border-radius:50% 0 50% 0}
@@ -790,6 +791,8 @@ li.tbd,p.tbd,div.tbd{padding:0 .6cqw}
 .mgrid small{font-size:2.2cqw}
 .mgrid i{font-style:normal;font-family:var(--display);font-size:3.4cqw;color:var(--red)}
 .mfoot{margin:0;font-size:2.3cqw;font-weight:700}
+.exprow{flex:1;min-height:0;align-items:center}
+.exprow img{width:auto;max-width:22%;max-height:100%;object-fit:contain}
 @media (prefers-reduced-motion:reduce){.leaf,.book{transition-duration:.01s!important}}
 </style>
 </head>
@@ -910,16 +913,13 @@ li.tbd,p.tbd,div.tbd{padding:0 .6cqw}
   <!-- 7b · PRODUCTO: PERSONAJE Y MÚSICA -->
   <section class="pg hoja" data-label="Producto · Personaje">
     <span class="tab">1 · Producto</span>
-    <h2 class="h">Personaje y música</h2>
+    <h2 class="h">El personaje</h2>
     <div class="layers">
       <video src="v/cebollin-carrera.mp4" muted loop autoplay playsinline aria-label="Animación de Cebollín"></video>
       <div><b>Personaje por capas</b><p>Expresiones independientes · hojas = vida</p></div>
     </div>
-    <div class="tracks2">
-      <div class="track" data-src="m/valle-verdura.mp3"><button class="play" type="button" aria-label="Reproducir Valle Verdura"></button><div><span>Valle Verdura</span><div class="bar"><i></i></div></div></div>
-      <div class="track" data-src="m/combate-jazz.mp3"><button class="play" type="button" aria-label="Reproducir Combate Jazz"></button><div><span>Combate Jazz</span><div class="bar"><i></i></div></div></div>
-    </div>
-    <div class="leafvida"><img src="a/pose-lado.webp" alt="Cebollín"><div><b>Hojas = vida</b><div class="lm"><i></i><i></i><i class="off"></i></div><small>Menos hojas, menos movimientos</small></div></div>
+    <div class="leafvida"><video src="v/hojas.mp4" muted loop autoplay playsinline aria-label="Cebollín perdiendo hojas en combate"></video><div><b>Hojas = vida</b><div class="lm"><i></i><i></i><i class="off"></i></div><small>Menos hojas, menos movimientos</small></div></div>
+    <div class="box capasrow exprow"><img src="a/pose-sorpresa.webp" alt=""><img src="a/pose-enojo.webp" alt=""><img src="a/pose-helice.webp" alt=""><img src="a/icono.webp" alt=""></div>
     <span class="folio">7</span>
   </section>
 
