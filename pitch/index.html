@@ -793,6 +793,16 @@ li.tbd,p.tbd,div.tbd{padding:0 .6cqw}
 .mfoot{margin:0;font-size:2.3cqw;font-weight:700}
 .exprow{flex:1;min-height:0;align-items:center}
 .exprow img{width:auto;max-width:22%;max-height:100%;object-fit:contain}
+.foes{grid-template-columns:1.1fr 1fr 1fr}
+.foes .boss-rab{grid-row:1 / 3;background:#2a2622;color:#f3e6c6;display:flex;flex-direction:column;justify-content:center}
+.foes .boss-rab img{height:auto;width:85%}
+.foes .boss-rab figcaption{color:var(--yellow)}
+.foes .boss-rab small{font-weight:700;font-size:2.4cqw}
+.foes img{height:13cqw}
+.foes figcaption{font-size:3.6cqw}
+.pg[data-label="Producto · Personaje"] .leafvida{grid-template-columns:1fr;gap:1.6cqw}
+.pg[data-label="Producto · Personaje"] .leafvida>div{display:flex;align-items:center;gap:2.4cqw;flex-wrap:wrap}
+.pg[data-label="Producto · Personaje"] .leafvida .lm{margin:0}
 @media (prefers-reduced-motion:reduce){.leaf,.book{transition-duration:.01s!important}}
 </style>
 </head>
@@ -897,6 +907,7 @@ li.tbd,p.tbd,div.tbd{padding:0 .6cqw}
     <span class="tab">1 · Producto</span>
     <h2 class="h">La plaga mutante</h2>
     <div class="foes">
+      <figure class="boss-rab"><img src="a/rabadin.webp" alt=""><figcaption>Dr. Rabadín</figcaption><small>El villano</small></figure>
       <figure><img src="a/fresarana.webp" alt=""><figcaption>Fresaraña</figcaption></figure>
       <figure><img src="a/mora-pulgona.webp" alt=""><figcaption>Mora-pulgona</figcaption></figure>
       <figure><img src="a/explotamora.webp" alt=""><figcaption>Explotamora</figcaption></figure>
@@ -914,10 +925,6 @@ li.tbd,p.tbd,div.tbd{padding:0 .6cqw}
   <section class="pg hoja" data-label="Producto · Personaje">
     <span class="tab">1 · Producto</span>
     <h2 class="h">El personaje</h2>
-    <div class="layers">
-      <video src="v/cebollin-carrera.mp4" muted loop autoplay playsinline aria-label="Animación de Cebollín"></video>
-      <div><b>Personaje por capas</b><p>Expresiones independientes · hojas = vida</p></div>
-    </div>
     <div class="leafvida"><video src="v/hojas.mp4" muted loop autoplay playsinline aria-label="Cebollín perdiendo hojas en combate"></video><div><b>Hojas = vida</b><div class="lm"><i></i><i></i><i class="off"></i></div><small>Menos hojas, menos movimientos</small></div></div>
     <div class="box capasrow exprow"><img src="a/pose-sorpresa.webp" alt=""><img src="a/pose-enojo.webp" alt=""><img src="a/pose-helice.webp" alt=""><img src="a/icono.webp" alt=""></div>
     <span class="folio">7</span>
